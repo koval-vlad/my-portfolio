@@ -44,15 +44,11 @@ export default function DotNetProject() {
           <>
             <Box sx={{ mt: 3 }}>
               <Button
-                variant="contained"
+                variant="outlined"
+                size="small"
                 startIcon={<SlideshowIcon />}
                 onClick={() => setPdfOpen(true)}
-                sx={{
-                  backgroundColor: '#1976d2',
-                  '&:hover': {
-                    backgroundColor: '#1565c0',
-                  },
-                }}
+                sx={{ mt: 0 }}
               >
                 View Presentation
               </Button>

@@ -33,7 +33,7 @@ export default function Header() {
           backgroundColor: '#fff',
           boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
           borderRadius: '10px',
-          margin: '8px',
+          margin: '0 8px',
           width: 'calc(100% - 16px)',
           left: 0,
         }}
