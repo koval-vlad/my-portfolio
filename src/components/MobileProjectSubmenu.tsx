@@ -10,25 +10,25 @@ import {
 import { useNavigate } from 'react-router-dom';
 
 // Tableau images
-import tableauModernHrDash from '../assets/tableau-modern-hr-dash.gif';
-import tableauHrDash from '../assets/tableau-hr-dash.gif';
-import tableauTitanicStory from '../assets/tableau-titanic-story.gif';
+import tableauModernHrDash from '../assets/tableau-modern-hr-dash.svg';
+import tableauHrDash from '../assets/tableau-hr-dash.svg';
+import tableauTitanicStory from '../assets/tableau-titanic-story.svg';
 
 // .NET images
-import netDynamoSoft from '../assets/net-dynamo-soft.jpg';
-import netMfsCrims from '../assets/net-mfs-crims.gif';
-import netMfsGpm from '../assets/net-mfs-gpm.gif';
-import netMfsIpo from '../assets/net-mfs-ipo.gif';
-import netMfsAssetMix from '../assets/net-mfs-asset-mix.gif';
-import netMfsMom from '../assets/net-mfs-mom.gif';
-import netPgcalcGiftWrapMerge from '../assets/net-pgcalc-gift-wrap-merge.gif';
-import netPgcalcGiftCalcs from '../assets/net-pgcalc-gift-calcs.gif';
-import netPgcalcBatchCalcs from '../assets/net-pgcalc-batch-calcs.gif';
-import netKccHurricane from '../assets/net-kcc-hurricane.gif';
+import netDynamoSoft from '../assets/net-dynamo-soft.svg';
+import netMfsCrims from '../assets/net-mfs-crims.svg';
+import netMfsGpm from '../assets/net-mfs-gpm.svg';
+import netMfsIpo from '../assets/net-mfs-ipo.svg';
+import netMfsAssetMix from '../assets/net-mfs-asset-mix.svg';
+import netMfsMom from '../assets/net-mfs-mom.svg';
+import netPgcalcGiftWrapMerge from '../assets/net-pgcalc-gift-wrap-merge.svg';
+import netPgcalcGiftCalcs from '../assets/net-pgcalc-gift-calcs.svg';
+import netPgcalcBatchCalcs from '../assets/net-pgcalc-batch-calcs.svg';
+import netKccHurricane from '../assets/net-kcc-hurricane.svg';
 
 // VB images
-import vbPgcalcGiftWrap from '../assets/vb-pgcalc-gift-wrap.gif';
-import vbPgcalcDbManager from '../assets/vb-pgcalc-db-manager.gif';
+import vbPgcalcGiftWrap from '../assets/vb-pgcalc-gift-wrap.svg';
+import vbPgcalcDbManager from '../assets/vb-pgcalc-db-manager.svg';
 
 interface MobileProjectSubmenuProps {
   category: string;
