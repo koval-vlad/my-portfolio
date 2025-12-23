@@ -109,7 +109,7 @@ export default function Resume() {
             <Divider sx={{ my: 2 }} />
 
             <Typography variant="h6" sx={{ fontWeight: 700 }}>EDUCATION</Typography>
-            <Typography variant="body1" sx={{ mt: 1 }}>M.A. and B.A. in English Language and Literature | Zaporizhzhia State University, Ukraine</Typography>
+            <Typography variant="body1" sx={{ mt: 1 }}>B.A. in English Language and Literature | Zaporizhzhia State University, Ukraine</Typography>
             <Typography variant="body1">Contemporary Applications Development Certification | Computer Learning Center, MA</Typography>
 
             <Typography variant="h6" sx={{ fontWeight: 700, mt: 3 }}>CERTIFICATIONS</Typography>
