@@ -2,7 +2,7 @@ import { Box, Typography, Paper, Button, Modal, IconButton } from '@mui/material
 import { useParams } from 'react-router-dom';
 import { useState } from 'react';
 import SlideshowIcon from '@mui/icons-material/Slideshow';
-import PDFViewerModal from '../components/PDFViewerModal';
+import SVGSpriteViewerModal from '../components/SVGSpriteViewerModal';
 import hurricanePdf from '../assets/Hurricane-Presentation.pdf';
 import CloseIcon from '@mui/icons-material/Close';
 
@@ -23,7 +23,7 @@ export default function DotNetProject() {
   const { id } = useParams<{ id: string }>();
   const projectId = parseInt(id || '1', 10);
   const project = projectData.find(p => p.id === projectId) || projectData[0];
-  const [pdfOpen, setPdfOpen] = useState(false);
+  const [presentationOpen, setPresentationOpen] = useState(false);
   const [giftOpen, setGiftOpen] = useState(false);
 
   return (
@@ -39,25 +39,31 @@ export default function DotNetProject() {
         <Typography variant="h3" component="h1">
           {project.label}
         </Typography>
-        
+
         {projectId === 10 && (
           <>
+            <Typography variant="body1" sx={{ mt: 2, mb: 3 }}>
+              A comprehensive reporting system for tracking and analyzing hurricane data,
+              providing detailed analytics and visualizations for risk assessment and emergency planning.
+            </Typography>
             <Box sx={{ mt: 3 }}>
               <Button
                 variant="outlined"
                 size="small"
                 startIcon={<SlideshowIcon />}
-                onClick={() => setPdfOpen(true)}
+                onClick={() => setPresentationOpen(true)}
                 sx={{ mt: 0 }}
               >
                 View Presentation
               </Button>
             </Box>
-            <PDFViewerModal
-              open={pdfOpen}
-              onClose={() => setPdfOpen(false)}
+            <SVGSpriteViewerModal
+              open={presentationOpen}
+              onClose={() => setPresentationOpen(false)}
               pdfUrl={hurricanePdf}
               title="Hurricane Presentation"
+              slideDirectory="/images/hurricane-presentation"
+              slideCount={28}
             />
           </>
         )}

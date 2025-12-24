@@ -1,12 +1,11 @@
-import { Box, Typography, Paper, Divider, Grid, Button } from '@mui/material';
-import resumeDocx from '../assets/vkoval@gmail.com.Resume.docx';
+import { Box, Typography, Paper, Divider } from '@mui/material';
 
 export default function Resume() {
   return (
     <Box sx={{ px: '8px', py: 2 }}>
       <Paper elevation={2} sx={{ p: 4, borderRadius: '10px', backgroundColor: '#fff' }}>
-        <Grid container spacing={3}>
-          <Grid item xs={12} md={4}>
+        <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 3 }}>
+          <Box sx={{ flex: { xs: '1 1 auto', md: '0 0 33%' } }}>
             <Box>
               <Typography variant="h5" component="h2" sx={{ fontWeight: 800 }}>
                 Vlad Koval
@@ -14,20 +13,10 @@ export default function Resume() {
               <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
                 vkoval@gmail.com | MA
               </Typography>
-
-              <Button
-                href={resumeDocx}
-                download="vkoval@gmail.com.Resume.docx"
-                variant="outlined"
-                size="small"
-                sx={{ mt: 2 }}
-              >
-                Download Word
-              </Button>
             </Box>
-          </Grid>
+          </Box>
 
-          <Grid item xs={12} md={8}>
+          <Box sx={{ flex: { xs: '1 1 auto', md: '0 0 67%' } }}>
             <Typography variant="h6" sx={{ fontWeight: 700 }}>SUMMARY</Typography>
             <Typography variant="body1" sx={{ mt: 1, color: 'text.primary', whiteSpace: 'pre-line' }}>
               Enterprise level Application Development professional with working experience in Financial/Investment Management Software
@@ -126,8 +115,8 @@ export default function Resume() {
               <li>Pluralsight — Using gRPC in ASP.NET Core</li>
               <li>Pluralsight — WPF MVVM in Depth</li>
             </Box>
-          </Grid>
-        </Grid>
+          </Box>
+        </Box>
       </Paper>
     </Box>
   );
