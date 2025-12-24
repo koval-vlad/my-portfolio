@@ -9,6 +9,7 @@ import SlideshowIcon from '@mui/icons-material/Slideshow';
 import ZoomInIcon from '@mui/icons-material/ZoomIn';
 import ZoomOutIcon from '@mui/icons-material/ZoomOut';
 import PrintIcon from '@mui/icons-material/Print';
+import DownloadIcon from '@mui/icons-material/Download';
 
 interface SVGSpriteViewerModalProps {
   open: boolean;
@@ -193,86 +194,73 @@ export default function SVGSpriteViewerModal({
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
-            p: 2,
+            p: 0.5,
             backgroundColor: '#f5f5f5',
             borderBottom: '1px solid #e0e0e0',
+            minHeight: '40px',
           }}
         >
-          <Typography variant="h6">{title}</Typography>
-
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-            {/* Navigation - only show when not presenting */}
-            {!isPresenting && (
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                <IconButton onClick={goToPrevSlide} disabled={currentSlideIndex <= 0} size="small">
-                  <NavigateBeforeIcon />
-                </IconButton>
-                <Typography variant="body2">
-                  {displayPageNumber} / {totalSlides}
-                </Typography>
-                <IconButton onClick={goToNextSlide} disabled={currentSlideIndex >= totalSlides - 1} size="small">
-                  <NavigateNextIcon />
-                </IconButton>
-              </Box>
-            )}
-
-            {/* Zoom Controls - show in both modes */}
+          {/* Left: Navigation */}
+          {!isPresenting && (
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-              <IconButton onClick={zoomOut} disabled={scale <= 0.5} size="small">
-                <ZoomOutIcon />
+              <IconButton onClick={goToPrevSlide} disabled={currentSlideIndex <= 0} size="small" title="Previous Slide">
+                <NavigateBeforeIcon />
               </IconButton>
               <Typography variant="body2" sx={{ minWidth: '40px', textAlign: 'center' }}>
-                {Math.round(scale * 100)}%
+                {displayPageNumber} / {totalSlides}
               </Typography>
-              <IconButton onClick={zoomIn} disabled={scale >= 3.0} size="small">
-                <ZoomInIcon />
+              <IconButton onClick={goToNextSlide} disabled={currentSlideIndex >= totalSlides - 1} size="small" title="Next Slide">
+                <NavigateNextIcon />
               </IconButton>
             </Box>
+          )}
+
+          {/* Center: Zoom and Presentation Controls */}
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            {/* Zoom Controls - show in both modes */}
+            <IconButton onClick={zoomOut} disabled={scale <= 0.5} size="small" title="Zoom Out">
+              <ZoomOutIcon />
+            </IconButton>
+            <Typography variant="body2" sx={{ minWidth: '35px', textAlign: 'center', fontSize: '0.75rem' }}>
+              {Math.round(scale * 100)}%
+            </Typography>
+            <IconButton onClick={zoomIn} disabled={scale >= 3.0} size="small" title="Zoom In">
+              <ZoomInIcon />
+            </IconButton>
 
             {/* Presentation Controls */}
             {isPresenting ? (
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                <Typography variant="body2" sx={{ mr: 1 }}>
-                  Slide {displayPageNumber} of {totalSlides}
-                </Typography>
-                <IconButton onClick={togglePlayPause} size="small" color="primary">
+              <>
+                <IconButton onClick={togglePlayPause} size="small" color="primary" title={isPlaying ? 'Pause' : 'Play'}>
                   {isPlaying ? <PauseIcon /> : <PlayArrowIcon />}
                 </IconButton>
-                <Typography variant="body2" sx={{ minWidth: '60px' }}>
-                  {isPlaying ? 'Playing (10s)' : 'Paused'}
+                <Typography variant="body2" sx={{ minWidth: '50px', fontSize: '0.7rem' }}>
+                  {isPlaying ? 'Playing' : 'Paused'}
                 </Typography>
-                <Button variant="outlined" size="small" onClick={stopPresentation}>
-                  Exit Present
-                </Button>
-              </Box>
+              </>
             ) : (
-              <Button
-                variant="contained"
-                size="small"
-                startIcon={<SlideshowIcon />}
-                onClick={startPresentation}
-                color="primary"
-              >
-                Present
-              </Button>
+              <IconButton onClick={startPresentation} size="small" color="primary" title="Start Presentation">
+                <SlideshowIcon />
+              </IconButton>
             )}
+          </Box>
 
+          {/* Right: Actions */}
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
             {/* Actions - only show when not presenting */}
             {!isPresenting && (
               <>
-                <Button variant="outlined" size="small" onClick={handleDownload}>
-                  Download PDF
-                </Button>
-
-                <Button variant="outlined" size="small" onClick={handlePrint} startIcon={<PrintIcon />}>
-                  Print All
-                </Button>
-
-                <IconButton onClick={onClose} size="small">
-                  <CloseIcon />
+                <IconButton onClick={handleDownload} size="small" title="Download PDF">
+                  <DownloadIcon />
+                </IconButton>
+                <IconButton onClick={handlePrint} size="small" title="Print All Slides">
+                  <PrintIcon />
                 </IconButton>
               </>
             )}
+            <IconButton onClick={isPresenting ? stopPresentation : onClose} size="small" title={isPresenting ? "Exit Presentation" : "Close"}>
+              <CloseIcon />
+            </IconButton>
           </Box>
         </Box>
 
