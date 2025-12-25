@@ -49,7 +49,7 @@ export default function HurricaneReport() {
           overflow: 'hidden'
         }}>
           <iframe
-            src={`https://view.officeapps.live.com/op/embed.aspx?src=${window.location.origin}/docs/Hurricanes-Report.xlsx`}
+            src={`https://view.officeapps.live.com/op/embed.aspx?src=${window.location.origin}/docs/Hurricanes-Report.xlsx?version=${new Date().getTime()}`}
             /*src="https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fkoval%2Dvlad%2Dportfolio%2Evercel%2Eapp%3A443%2Fdocs%2FHurricanes%2DReport%2Exlsx"*/
             width="100%"
             height="100%"
