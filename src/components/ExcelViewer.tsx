@@ -16,9 +16,9 @@ export default function ExcelViewer({
   src,
   title = "Excel Workbook",
   initialZoom = 1.0,
-  minZoom = 0.2,
+  minZoom = 0.1,
   maxZoom = 2.0,
-  zoomStep = 0.2,
+  zoomStep = 0.1,
 }: ExcelViewerProps) {
   const [zoom, setZoom] = useState<number>(initialZoom);
 

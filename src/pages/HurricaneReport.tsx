@@ -50,7 +50,7 @@ export default function HurricaneReport() {
         <ExcelViewer
           src={excelSrc}
           title="Hurricane Report Excel Workbook"
-          initialZoom={0.2}
+          initialZoom={0.1}
         />
 
         <SVGSpriteViewerModal
