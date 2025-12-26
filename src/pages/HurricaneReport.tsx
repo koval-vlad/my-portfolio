@@ -1,7 +1,8 @@
 import { Box, Typography, Paper, Button } from '@mui/material';
 import { useState } from 'react';
 import SlideshowIcon from '@mui/icons-material/Slideshow';
-import GetAppIcon from '@mui/icons-material/GetApp';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTornado } from '@fortawesome/free-solid-svg-icons';
 import SVGSpriteViewerModal from '../components/SVGSpriteViewerModal';
 import hurricanePdf from '/docs/Hurricane-Presentation.pdf';
 
@@ -21,15 +22,15 @@ export default function HurricaneReport() {
           backgroundColor: '#fff',
         }}
       >
-        <Typography variant="h6" component="h1">
+        <Typography variant="h6" component="h1" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
           Hurricane Report
+          <FontAwesomeIcon icon={faTornado} style={{ fontSize: '1.2rem' }} />
         </Typography>
 
         <Typography variant="body1" sx={{ mt: 2, mb: 3 }}>
-          A comprehensive reporting system for tracking and analyzing hurricane data,
-          providing detailed analytics and visualizations for risk assessment and emergency planning.
+        Excel report based on the NOAA Best Track Data to identify all hurricanes that have made landfall in Florida since 1900 for risk assessment and emergency planning.
         </Typography>
-        <Box sx={{ mt: 3 }}>
+        <Box sx={{ mt: 3, mb: 2 }}>
           <Button
             variant="outlined"
             size="small"

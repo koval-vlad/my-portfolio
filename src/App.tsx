@@ -13,11 +13,10 @@ import AssetMix from './pages/AssetMix';
 import OrderManager from './pages/OrderManager';
 import GiftWrapMerge from './pages/GiftWrapMerge';
 import GiftCalcs from './pages/GiftCalcs';
-import BatchCalcs from './pages/BatchCalcs';
+import CorporateWebSite from './pages/CorporateWebSite';
 import HurricaneReport from './pages/HurricaneReport';
 import GiftWrap from './pages/GiftWrap';
 import DatabaseManager from './pages/DatabaseManager';
-import EducationView from './pages/EducationView';
 import FormalDegree from './pages/FormalDegree';
 import Certificates from './pages/Certificates';
 import Pluralsight from './pages/Pluralsight';
@@ -57,11 +56,10 @@ function App() {
               <Route path="/dotnet/order-manager" element={<OrderManager />} />
               <Route path="/dotnet/gift-wrap-merge" element={<GiftWrapMerge />} />
               <Route path="/dotnet/gift-calcs" element={<GiftCalcs />} />
-              <Route path="/dotnet/batch-calcs" element={<BatchCalcs />} />
+              <Route path="/vb/corporate-website" element={<CorporateWebSite />} />
               <Route path="/dotnet/hurricane-report" element={<HurricaneReport />} />
               <Route path="/vb/gift-wrap" element={<GiftWrap />} />
               <Route path="/vb/database-manager" element={<DatabaseManager />} />
-              <Route path="/education/view" element={<EducationView />} />
               <Route path="/education/formal-degree" element={<FormalDegree />} />
               <Route path="/education/certificates" element={<Certificates />} />
               <Route path="/education/pluralsight" element={<Pluralsight />} />

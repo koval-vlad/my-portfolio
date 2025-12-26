@@ -31,7 +31,7 @@ export default function DesktopNav({ currentPath }: DesktopNavProps) {
     { label: 'Home', path: '/', expandable: false, category: '' },
     { label: 'Tableau', path: '/tableau', expandable: true, category: 'tableau' },
     { label: '.NET', path: '/dotnet', expandable: true, category: 'dotnet' },
-    { label: 'VB', path: '/vb', expandable: true, category: 'vb' },
+    { label: 'VB/ASP', path: '/vb', expandable: true, category: 'vb' },
     { label: 'Education', path: '/education', expandable: true, category: 'education' },
     { label: 'Resume', path: '/resume', expandable: true, category: '' },
   ];

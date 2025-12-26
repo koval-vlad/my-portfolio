@@ -1,5 +1,7 @@
 import { Box, Paper, Typography } from '@mui/material';
 import { useEffect } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faShip } from '@fortawesome/free-solid-svg-icons';
 
 export default function TitanicSurvivorStory() {
   useEffect(() => {
@@ -24,8 +26,9 @@ export default function TitanicSurvivorStory() {
           backgroundColor: '#fff',
         }}
       >
-        <Typography variant="h4" component="h2" sx={{ mb: 2 }}>
+        <Typography variant="h6" component="h2" sx={{ mb: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
           Titanic Survivor Story
+          <FontAwesomeIcon icon={faShip} style={{ fontSize: '1.2rem' }} />
         </Typography>
         <Typography variant="body1" sx={{ mb: 3 }}>
           An interactive data story exploring the Titanic disaster through passenger data,

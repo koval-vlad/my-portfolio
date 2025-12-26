@@ -16,7 +16,7 @@ import netMfsAssetMix from '../assets/net-mfs-asset-mix.svg';
 import netMfsMom from '../assets/net-mfs-mom.svg';
 import netPgcalcGiftWrapMerge from '../assets/net-pgcalc-gift-wrap-merge.svg';
 import netPgcalcGiftCalcs from '../assets/net-pgcalc-gift-calcs.svg';
-import netPgcalcBatchCalcs from '../assets/net-pgcalc-batch-calcs.svg';
+import vbWebSite from '../assets/vb-web-site.svg';
 import netKccHurricane from '../assets/net-kcc-hurricane.svg';
 
 // VB images
@@ -50,12 +50,12 @@ const projectData: Record<string, Project[]> = {
     { id: 6, title: 'Order Manager', image: netMfsMom, route: 'order-manager' },
     { id: 7, title: 'GiftWrap Merge', image: netPgcalcGiftWrapMerge, route: 'gift-wrap-merge' },
     { id: 8, title: 'Gift Calcs', image: netPgcalcGiftCalcs, route: 'gift-calcs' },
-    { id: 9, title: 'Batch Calcs', image: netPgcalcBatchCalcs, route: 'batch-calcs' },
-    { id: 10, title: 'Hurricane Report', image: netKccHurricane, route: 'hurricane-report' },
+    { id: 9, title: 'Hurricane Report', image: netKccHurricane, route: 'hurricane-report' },
   ],
   vb: [
     { id: 1, title: 'GiftWrap', image: vbPgcalcGiftWrap, route: 'gift-wrap' },
     { id: 2, title: 'Database Manager', image: vbPgcalcDbManager, route: 'database-manager' },
+    { id: 3, title: 'Corporate Web Site', image: vbWebSite, route: 'corporate-website' },
   ],
 };
 

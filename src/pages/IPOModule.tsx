@@ -11,7 +11,7 @@ export default function IPOModule() {
           backgroundColor: '#fff',
         }}
       >
-        <Typography variant="h3" component="h1">
+        <Typography variant="h6" component="h1">
           IPO Module
         </Typography>
       </Paper>
