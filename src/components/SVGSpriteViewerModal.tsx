@@ -2,6 +2,8 @@ import { useState, useEffect, useCallback } from 'react';
 import { Modal, Paper, Typography, Box, IconButton, CircularProgress } from '@mui/material';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import FirstPageIcon from '@mui/icons-material/FirstPage';
+import LastPageIcon from '@mui/icons-material/LastPage';
 import CloseIcon from '@mui/icons-material/Close';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
@@ -10,6 +12,8 @@ import ZoomInIcon from '@mui/icons-material/ZoomIn';
 import ZoomOutIcon from '@mui/icons-material/ZoomOut';
 import PrintIcon from '@mui/icons-material/Print';
 import DownloadIcon from '@mui/icons-material/Download';
+import FullscreenIcon from '@mui/icons-material/Fullscreen';
+import FullscreenExitIcon from '@mui/icons-material/FullscreenExit';
 
 interface SVGSpriteViewerModalProps {
   open: boolean;
@@ -34,6 +38,7 @@ export default function SVGSpriteViewerModal({
   const [isPresenting, setIsPresenting] = useState<boolean>(false);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [scale, setScale] = useState<number>(1.0);
+  const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
 
   // Load individual slide file
   const loadSlide = useCallback(async (slideNumber: number) => {
@@ -77,8 +82,19 @@ export default function SVGSpriteViewerModal({
       setIsPresenting(false);
       setIsPlaying(false);
       setScale(1.0);
+      setIsFullscreen(false);
     }
   }, [open]);
+
+  // Listen for fullscreen changes
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      setIsFullscreen(!!document.fullscreenElement);
+    };
+
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    return () => document.removeEventListener('fullscreenchange', handleFullscreenChange);
+  }, []);
 
   // Auto-advance slides during presentation
   useEffect(() => {
@@ -107,6 +123,16 @@ export default function SVGSpriteViewerModal({
   const goToNextSlide = () => {
     if (slideCount && currentSlideIndex < slideCount - 1) {
       setCurrentSlideIndex(currentSlideIndex + 1);
+    }
+  };
+
+  const goToFirstSlide = () => {
+    setCurrentSlideIndex(0);
+  };
+
+  const goToLastSlide = () => {
+    if (slideCount) {
+      setCurrentSlideIndex(slideCount - 1);
     }
   };
 
@@ -158,6 +184,18 @@ export default function SVGSpriteViewerModal({
     setScale((prev) => Math.max(prev - 0.25, 0.5)); // Min zoom 50%
   };
 
+  const toggleFullscreen = async () => {
+    try {
+      if (!document.fullscreenElement) {
+        await document.documentElement.requestFullscreen();
+      } else {
+        await document.exitFullscreen();
+      }
+    } catch (error) {
+      console.error('Error toggling fullscreen:', error);
+    }
+  };
+
   const displayPageNumber = currentSlideIndex + 1;
   const totalSlides = slideCount || 0;
 
@@ -169,18 +207,23 @@ export default function SVGSpriteViewerModal({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
+        ...(isFullscreen && {
+          '& .MuiModal-backdrop': {
+            backgroundColor: 'rgba(0, 0, 0, 1)',
+          },
+        }),
       }}
     >
       <Paper
         sx={{
-          width: '95%',
-          height: '95%',
-          maxWidth: '1400px',
-          maxHeight: '900px',
+          width: isFullscreen ? '100vw' : '95%',
+          height: isFullscreen ? '100vh' : '95%',
+          maxWidth: isFullscreen ? 'none' : '1400px',
+          maxHeight: isFullscreen ? 'none' : '900px',
           position: 'relative',
           display: 'flex',
           flexDirection: 'column',
-          borderRadius: '8px',
+          borderRadius: isFullscreen ? 0 : '8px',
           overflow: 'hidden',
         }}
       >
@@ -199,6 +242,9 @@ export default function SVGSpriteViewerModal({
           {/* Left: Navigation */}
           {!isPresenting && (
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              <IconButton onClick={goToFirstSlide} disabled={currentSlideIndex <= 0} size="small" title="First Slide">
+                <FirstPageIcon />
+              </IconButton>
               <IconButton onClick={goToPrevSlide} disabled={currentSlideIndex <= 0} size="small" title="Previous Slide">
                 <NavigateBeforeIcon />
               </IconButton>
@@ -207,6 +253,9 @@ export default function SVGSpriteViewerModal({
               </Typography>
               <IconButton onClick={goToNextSlide} disabled={currentSlideIndex >= totalSlides - 1} size="small" title="Next Slide">
                 <NavigateNextIcon />
+              </IconButton>
+              <IconButton onClick={goToLastSlide} disabled={currentSlideIndex >= totalSlides - 1} size="small" title="Last Slide">
+                <LastPageIcon />
               </IconButton>
             </Box>
           )}
@@ -251,6 +300,9 @@ export default function SVGSpriteViewerModal({
                 </IconButton>
                 <IconButton onClick={handlePrint} size="small" title="Print All Slides">
                   <PrintIcon />
+                </IconButton>
+                <IconButton onClick={toggleFullscreen} size="small" title={isFullscreen ? "Exit Fullscreen" : "Enter Fullscreen"}>
+                  {isFullscreen ? <FullscreenExitIcon /> : <FullscreenIcon />}
                 </IconButton>
               </>
             )}
