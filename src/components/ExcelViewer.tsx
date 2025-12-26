@@ -10,6 +10,7 @@ interface ExcelViewerProps {
   minZoom?: number;
   maxZoom?: number;
   zoomStep?: number;
+  excelContainerHeight?: number;
 }
 
 export default function ExcelViewer({
@@ -19,6 +20,7 @@ export default function ExcelViewer({
   minZoom = 0.1,
   maxZoom = 2.0,
   zoomStep = 0.1,
+  excelContainerHeight = 1000,
 }: ExcelViewerProps) {
   const [zoom, setZoom] = useState<number>(initialZoom);
 
@@ -48,7 +50,7 @@ export default function ExcelViewer({
       {/* Excel Viewer Container */}
       <Box sx={{
         width: '100%',
-        height: '1200px',
+        height: `${excelContainerHeight}px`,
         border: '1px solid #e0e0e0',
         borderRadius: '8px',
         overflow: 'hidden',

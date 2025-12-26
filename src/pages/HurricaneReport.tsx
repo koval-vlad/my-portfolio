@@ -51,6 +51,7 @@ export default function HurricaneReport() {
           src={excelSrc}
           title="Hurricane Report Excel Workbook"
           initialZoom={0.1}
+          excelContainerHeight={800}
         />
 
         <SVGSpriteViewerModal
