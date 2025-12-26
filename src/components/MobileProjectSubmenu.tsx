@@ -39,29 +39,30 @@ interface Project {
   id: number;
   title: string;
   image: string;
+  route: string;
 }
 
 const projectData: Record<string, Project[]> = {
   tableau: [
-    { id: 1, title: 'Modern HR Dashboard', image: tableauModernHrDash },
-    { id: 2, title: 'HR Analytics Dashboard', image: tableauHrDash },
-    { id: 3, title: 'Titanic Survivor Story', image: tableauTitanicStory },
+    { id: 1, title: 'Modern HR Dashboard', image: tableauModernHrDash, route: 'modern-hr-dashboard' },
+    { id: 2, title: 'HR Analytics Dashboard', image: tableauHrDash, route: 'hr-analytics-dashboard' },
+    { id: 3, title: 'Titanic Survivor Story', image: tableauTitanicStory, route: 'titanic-survivor-story' },
   ],
   dotnet: [
-    { id: 1, title: 'Dynamo Software', image: netDynamoSoft },
-    { id: 2, title: 'CRD Trading System', image: netMfsCrims },
-    { id: 3, title: 'Portfolio Modeler', image: netMfsGpm },
-    { id: 4, title: 'IPO Module', image: netMfsIpo },
-    { id: 5, title: 'Asset Mix', image: netMfsAssetMix },
-    { id: 6, title: 'Order Manager', image: netMfsMom },
-    { id: 7, title: 'GiftWrap Merge', image: netPgcalcGiftWrapMerge },
-    { id: 8, title: 'Gift Calcs', image: netPgcalcGiftCalcs },
-    { id: 9, title: 'Hurricane Report', image: netKccHurricane },
+    { id: 1, title: 'Dynamo Software', image: netDynamoSoft, route: 'dynamo-software' },
+    { id: 2, title: 'CRD Trading System', image: netMfsCrims, route: 'crd-trading-system' },
+    { id: 3, title: 'Portfolio Modeler', image: netMfsGpm, route: 'portfolio-modeler' },
+    { id: 4, title: 'IPO Module', image: netMfsIpo, route: 'ipo-module' },
+    { id: 5, title: 'Asset Mix', image: netMfsAssetMix, route: 'asset-mix' },
+    { id: 6, title: 'Order Manager', image: netMfsMom, route: 'order-manager' },
+    { id: 7, title: 'GiftWrap Merge', image: netPgcalcGiftWrapMerge, route: 'gift-wrap-merge' },
+    { id: 8, title: 'Gift Calcs', image: netPgcalcGiftCalcs, route: 'gift-calcs' },
+    { id: 9, title: 'Hurricane Report', image: netKccHurricane, route: 'hurricane-report' },
   ],
   vb: [
-    { id: 1, title: 'GiftWrap', image: vbPgcalcGiftWrap },
-    { id: 2, title: 'Database Manager', image: vbPgcalcDbManager },
-    { id: 3, title: 'Corporate Web Site', image: vbWebSite },
+    { id: 1, title: 'GiftWrap', image: vbPgcalcGiftWrap, route: 'gift-wrap' },
+    { id: 2, title: 'Database Manager', image: vbPgcalcDbManager, route: 'database-manager' },
+    { id: 3, title: 'Corporate Web Site', image: vbWebSite, route: 'corporate-website' },
   ],
 };
 
@@ -90,8 +91,8 @@ export default function MobileProjectSubmenu({
     };
   }, [category, projects.length]);
 
-  const handleProjectClick = (projectId: number) => {
-    navigate(`/${category}/${projectId}`);
+  const handleProjectClick = (project: Project) => {
+    navigate(`/${category}/${project.route}`);
     onClose();
   };
 
@@ -101,7 +102,7 @@ export default function MobileProjectSubmenu({
         <Fade key={project.id} in={visibleItems.includes(index)} timeout={400}>
           <ListItem disablePadding>
             <ListItemButton
-              onClick={() => handleProjectClick(project.id)}
+              onClick={() => handleProjectClick(project)}
               sx={{
                 display: 'flex',
                 gap: 2,
