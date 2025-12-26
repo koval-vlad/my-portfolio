@@ -54,17 +54,22 @@ export default function ExcelViewer({
         overflow: 'hidden',
         position: 'relative'
       }}>
-        <iframe
-          src={src}
-          style={{
-            width: '100%',
-            height: '100%',
-            border: 'none',
-            transform: `scale(${zoom})`,
-            transformOrigin: 'top left'
-          }}
-          title={title}
-        />
+        <Box sx={{
+          width: '100%',
+          height: '100%',
+          zoom: zoom,
+          transformOrigin: 'top left'
+        }}>
+          <iframe
+            src={src}
+            style={{
+              width: '100%',
+              height: '100%',
+              border: 'none'
+            }}
+            title={title}
+          />
+        </Box>
       </Box>
     </Box>
   );
