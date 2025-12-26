@@ -8,6 +8,7 @@ import hrDashboardPdf from '/docs/HR-Dashboard.pdf';
 
 export default function ModernHRDashboard() {
   const [presentationOpen, setPresentationOpen] = useState(false);
+  const slideshowImageCount = 16;
 
   useEffect(() => {
     const script = document.createElement('script');
@@ -64,7 +65,7 @@ export default function ModernHRDashboard() {
           pdfUrl={hrDashboardPdf}
           title="HR Dashboard Presentation"
           slideDirectory="/images/hr-dashboard-presentation"
-          slideCount={16}
+          slideCount={slideshowImageCount}
         />
       </Paper>
     </Box>

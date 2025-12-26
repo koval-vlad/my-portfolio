@@ -15,7 +15,7 @@ interface ExcelViewerProps {
 export default function ExcelViewer({
   src,
   title = "Excel Workbook",
-  initialZoom = 0.2,
+  initialZoom = 1.0,
   minZoom = 0.2,
   maxZoom = 2.0,
   zoomStep = 0.2,

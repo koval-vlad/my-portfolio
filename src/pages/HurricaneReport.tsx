@@ -11,6 +11,10 @@ export default function HurricaneReport() {
   const [presentationOpen, setPresentationOpen] = useState(false);
 
   const excelSrc = `https://view.officeapps.live.com/op/embed.aspx?src=${window.location.origin}/docs/Hurricanes-Report.xlsx?version=${new Date().getTime()}`;
+  const slideshowImageCount = 28;
+
+  // Note: SVG files are served from public/images/hurricane-presentation/
+  // They are loaded dynamically by SVGSpriteViewerModal
 
   return (
     <Box sx={{ px: '8px', py: 2 }}>
@@ -46,7 +50,7 @@ export default function HurricaneReport() {
         <ExcelViewer
           src={excelSrc}
           title="Hurricane Report Excel Workbook"
-          initialZoom={0.5}
+          initialZoom={0.2}
         />
 
         <SVGSpriteViewerModal
@@ -55,7 +59,7 @@ export default function HurricaneReport() {
           pdfUrl={hurricanePdf}
           title="Hurricane Presentation"
           slideDirectory="/images/hurricane-presentation"
-          slideCount={28}
+          slideCount={slideshowImageCount}
         />
       </Paper>
     </Box>
