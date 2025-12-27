@@ -2,7 +2,7 @@ import { Box, Typography, Paper, Button } from '@mui/material';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalculator } from '@fortawesome/free-solid-svg-icons';
-import { HiCalculator } from 'react-icons/hi';
+import TableViewIcon from '@mui/icons-material/TableView';
 
 export default function GiftCalcs() {
   return (
@@ -105,7 +105,7 @@ export default function GiftCalcs() {
       >
         <Typography variant="h6" component="h1" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
           Batch Calculator
-          <HiCalculator style={{ fontSize: '1.2rem' }} />
+          <TableViewIcon style={{ fontSize: '1.6rem' }} />
         </Typography>
 
         <Box sx={{ mt: 3 }}>

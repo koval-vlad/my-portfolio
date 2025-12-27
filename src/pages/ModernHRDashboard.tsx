@@ -1,8 +1,7 @@
 import { Box, Paper, Button, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import SlideshowIcon from '@mui/icons-material/Slideshow';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faGauge } from '@fortawesome/free-solid-svg-icons';
+import { HiOutlinePresentationChartLine } from 'react-icons/hi';
 import SVGSpriteViewerModal from '../components/SVGSpriteViewerModal';
 import hrDashboardPdf from '/docs/HR-Dashboard.pdf';
 
@@ -33,8 +32,8 @@ export default function ModernHRDashboard() {
         }}
       >
         <Typography variant="h6" component="h2" sx={{ mb: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
-          Modern HR Dashboard
-          <FontAwesomeIcon icon={faGauge} style={{ fontSize: '1.2rem' }} />
+          Modern HR Dashboard          
+          <HiOutlinePresentationChartLine style={{ fontSize: '1.5rem' }} />
         </Typography>
         <Typography variant="body1" sx={{ mb: 3 }}>
           An interactive Tableau dashboard providing comprehensive analytics for human resources management,

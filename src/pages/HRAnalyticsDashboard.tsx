@@ -1,7 +1,6 @@
 import { Box, Paper, Typography } from '@mui/material';
 import { useEffect } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChartBar } from '@fortawesome/free-solid-svg-icons';
+import BarChartIcon from '@mui/icons-material/AreaChartOutlined';
 
 export default function HRAnalyticsDashboard() {
   useEffect(() => {
@@ -27,8 +26,8 @@ export default function HRAnalyticsDashboard() {
         }}
       >
         <Typography variant="h6" component="h2" sx={{ mb: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
-          HR Analytics Dashboard
-          <FontAwesomeIcon icon={faChartBar} style={{ fontSize: '1.2rem' }} />
+          HR Analytics Dashboard          
+          <BarChartIcon style={{ fontSize: '1.5rem' }} />
         </Typography>
         <Typography variant="body1" sx={{ mb: 3 }}>
           Advanced analytics dashboard for human resources data analysis, featuring interactive visualizations
