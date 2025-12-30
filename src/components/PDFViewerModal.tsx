@@ -1,16 +1,10 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Box, IconButton, Modal, Paper, Typography, CircularProgress } from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
-import ZoomInIcon from '@mui/icons-material/ZoomIn';
-import ZoomOutIcon from '@mui/icons-material/ZoomOut';
-import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
-import NavigateNextIcon from '@mui/icons-material/NavigateNext';
-import DownloadIcon from '@mui/icons-material/Download';
-import PrintIcon from '@mui/icons-material/Print';
-import SlideshowIcon from '@mui/icons-material/Slideshow';
-import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-import PauseIcon from '@mui/icons-material/Pause';
-import FullscreenExitIcon from '@mui/icons-material/FullscreenExit';
+import { Box } from '@/components/ui/box';
+import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { Typography } from '@/components/ui/typography';
+import { Paper } from '@/components/ui/paper';
+import { X, ZoomIn, ZoomOut, ChevronLeft, ChevronRight, Download, Printer, Presentation, Play, Pause, Minimize } from 'lucide-react';
 import { Document, Page, pdfjs } from 'react-pdf';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 import 'react-pdf/dist/Page/TextLayer.css';
@@ -202,20 +196,8 @@ export default function PDFViewerModal({ open, onClose, pdfUrl, title = 'PDF Vie
   };
 
   return (
-    <Modal
-      open={open}
-      onClose={handleClose}
-      aria-labelledby={title}
-      sx={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}
-    >
-      <Paper
-        className="pdf-modal-content"
-        elevation={8}
-        sx={{
+    <Dialog open={open} onOpenChange={handleClose}>
+      <DialogContent className="pdf-modal-content shadow-lg" sx={{
           width: '90%',
           height: '90%',
           maxWidth: '1200px',
@@ -247,35 +229,35 @@ export default function PDFViewerModal({ open, onClose, pdfUrl, title = 'PDF Vie
         >
           {/* Left controls - Navigation */}
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-            <IconButton onClick={goToPrevPage} disabled={pageNumber <= 1} size="small">
-              <NavigateBeforeIcon />
-            </IconButton>
+            <Button onClick={goToPrevPage} disabled={pageNumber <= 1} size="sm">
+              <ChevronLeft />
+            </Button>
             <Typography variant="body2">
               {pageNumber} / {numPages}
             </Typography>
-            <IconButton onClick={goToNextPage} disabled={pageNumber >= numPages} size="small">
-              <NavigateNextIcon />
-            </IconButton>
+            <Button onClick={goToNextPage} disabled={pageNumber >= numPages} size="sm">
+              <ChevronRight />
+            </Button>
           </Box>
 
           {/* Center controls - Zoom or Presentation controls */}
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
             {isPresenting ? (
               <>
-                <IconButton onClick={togglePlayPause} size="small" title={isPlaying ? 'Pause' : 'Play'}>
-                  {isPlaying ? <PauseIcon /> : <PlayArrowIcon />}
-                </IconButton>
+                <Button onClick={togglePlayPause} size="sm" title={isPlaying ? 'Pause' : 'Play'}>
+                  {isPlaying ? <Pause /> : <Play />}
+                </Button>
                 <Typography variant="body2">{isPlaying ? 'Playing (5s)' : 'Paused'}</Typography>
               </>
             ) : (
               <>
-                <IconButton onClick={zoomOut} size="small">
-                  <ZoomOutIcon />
-                </IconButton>
+                <Button onClick={zoomOut} size="sm">
+                  <ZoomOut />
+                </Button>
                 <Typography variant="body2">{Math.round(scale * 100)}%</Typography>
-                <IconButton onClick={zoomIn} size="small">
-                  <ZoomInIcon />
-                </IconButton>
+                <Button onClick={zoomIn} size="sm">
+                  <ZoomIn />
+                </Button>
               </>
             )}
           </Box>
@@ -283,25 +265,25 @@ export default function PDFViewerModal({ open, onClose, pdfUrl, title = 'PDF Vie
           {/* Right controls - Actions */}
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
             {isPresenting ? (
-              <IconButton onClick={handleExitPresentation} size="small" title="Exit Presentation">
-                <FullscreenExitIcon />
-              </IconButton>
+              <Button onClick={handleExitPresentation} size="sm" title="Exit Presentation">
+                <Minimize />
+              </Button>
             ) : (
               <>
-                <IconButton onClick={handlePresentation} size="small" title="Present">
-                  <SlideshowIcon />
-                </IconButton>
-                <IconButton onClick={handleDownload} size="small" title="Download">
-                  <DownloadIcon />
-                </IconButton>
-                <IconButton onClick={handlePrint} size="small" title="Print">
-                  <PrintIcon />
-                </IconButton>
+                <Button onClick={handlePresentation} size="sm" title="Present">
+                  <Presentation />
+                </Button>
+                <Button onClick={handleDownload} size="sm" title="Download">
+                  <Download />
+                </Button>
+                <Button onClick={handlePrint} size="sm" title="Print">
+                  <Printer />
+                </Button>
               </>
             )}
-            <IconButton onClick={handleClose} size="small" title="Close">
-              <CloseIcon />
-            </IconButton>
+            <Button onClick={handleClose} size="sm" title="Close">
+              <X />
+            </Button>
           </Box>
         </Box>
 
@@ -335,7 +317,7 @@ export default function PDFViewerModal({ open, onClose, pdfUrl, title = 'PDF Vie
             />
           </Document>
         </Box>
-      </Paper>
-    </Modal>
+      </DialogContent>
+    </Dialog>
   );
 }

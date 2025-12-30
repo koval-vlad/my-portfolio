@@ -1,6 +1,5 @@
-import { MenuItem, ListItemIcon, ListItemText } from '@mui/material';
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import DownloadIcon from '@mui/icons-material/Download';
+import { Box } from '@/components/ui/box';
+import { Eye, Download } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import resumePdf from '/docs/vkoval@gmail.com.Resume.pdf';
 
@@ -27,19 +26,21 @@ export default function ResumeSubmenu({ onClose }: ResumeSubmenuProps) {
   };
 
   return (
-    <>
-      <MenuItem onClick={handleView} sx={{ minWidth: 180 }}>
-        <ListItemIcon>
-          <VisibilityIcon fontSize="small" />
-        </ListItemIcon>
-        <ListItemText>View</ListItemText>
-      </MenuItem>
-      <MenuItem onClick={handleDownload}>
-        <ListItemIcon>
-          <DownloadIcon fontSize="small" />
-        </ListItemIcon>
-        <ListItemText>Download PDF</ListItemText>
-      </MenuItem>
-    </>
+    <Box className="w-full bg-background">
+      <button
+        onClick={handleView}
+        className="flex items-center w-full py-2 px-4 text-primary text-sm hover:bg-accent hover:cursor-pointer transition-colors"
+      >
+        <Eye className="h-4 w-4 mr-3" />
+        View
+      </button>
+      <button
+        onClick={handleDownload}
+        className="flex items-center w-full py-2 px-4 text-primary text-sm hover:bg-accent hover:cursor-pointer transition-colors"
+      >
+        <Download className="h-4 w-4 mr-3" />
+        Download PDF
+      </button>
+    </Box>
   );
 }

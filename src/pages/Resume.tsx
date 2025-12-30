@@ -1,43 +1,46 @@
-import { Box, Typography, Paper, Divider, Button } from '@mui/material';
+import { Box } from '@/components/ui/box';
+import { Typography } from '@/components/ui/typography';
+import { Paper } from '@/components/ui/paper';
+import { Divider } from '@/components/ui/divider';
+import { Button } from '@/components/ui/button';
 import DownloadIcon from '@mui/icons-material/Download';
 
 export default function Resume() {
   return (
-    <Box sx={{ px: '8px', py: 2 }}>
-      <Paper elevation={2} sx={{ p: 4, borderRadius: '10px', backgroundColor: '#fff' }}>
-        <Box sx={{ maxWidth: '800px', mx: 'auto' }}>
-          <Box sx={{ textAlign: 'center', mb: 3 }}>
-            <Typography variant="h5" component="h2" sx={{ fontWeight: 800 }}>
+    <Box className="px-0 py-2">
+      <Paper elevation={2} className="p-4 rounded-xl">
+        <Box className="max-w-2xl mx-auto">
+          <Box className="text-center mb-3">
+            <Typography variant="h4" as="h2" className="font-bold">
               Vlad Koval
             </Typography>
-            <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
+            <Typography variant="small" className="mt-0.5 text-muted-foreground">
               vkoval@gmail.com | MA
             </Typography>
             <Button
-              variant="outlined"
-              size="small"
-              startIcon={<DownloadIcon />}
+              variant="glowSimple"
+              size="sm"
               onClick={() => {
                 const link = document.createElement('a');
                 link.href = '/docs/vkoval@gmail.com.Resume.docx';
                 link.download = 'Vlad_Koval_Resume.docx';
                 link.click();
               }}
-              sx={{ mt: 2 }}
+              className="mt-2"
             >
               DOWNLOAD WORD
             </Button>
           </Box>
 
           <Box>
-            <Typography variant="h6" sx={{ fontWeight: 700 }}>SUMMARY</Typography>
-            <Typography variant="body1" sx={{ mt: 1, color: 'text.primary', whiteSpace: 'pre-line' }}>
+            <Typography variant="h6" className="font-bold">SUMMARY</Typography>
+            <Typography variant="p" className="mt-1 text-foreground whitespace-pre-line">
               Enterprise level Application Development professional with working experience in Financial/Investment Management Software
               Industry. Proficient in application and database development with solid understanding of software architecture and design
               principles. Excellent problem-solving and debugging, communication and collaboration as well as customer support skills.
             </Typography>
 
-            <Typography variant="h6" sx={{ fontWeight: 700, mt: 3 }}>TECHNICAL SKILLS</Typography>
+            <Typography variant="h6" className="font-bold mt-3">TECHNICAL SKILLS</Typography>
             <Box component="ul" sx={{ pl: 3, mt: 1 }}>
               <li><strong>Programming languages:</strong> C#, SQL, PL/SQL, VB.NET, VB6, VB Script, JavaScript, CSS, HTML</li>
               <li><strong>Technologies:</strong> .NET Core 9, WPF, gRPC, Web API, WinForms, WebForms, WCF/Windows Services, ADO.NET, LINQ, Blazor, ASP.NET Web Services, ASP, IBM and MS MQ, ASP.NET Core, REST API, React, Infragistics Controls, Crystal Reports, SSRS Reports, SOAP, JSON, XML, MSTest, DataDog</li>
@@ -49,10 +52,10 @@ export default function Resume() {
               <li><strong>Trading Systems:</strong> Charles River IMS, HelioGraph, Omgeo Oasys/CTM</li>
             </Box>
 
-            <Typography variant="h6" sx={{ fontWeight: 700, mt: 3 }}>EXPERIENCE</Typography>
+            <Typography variant="h6" className="font-bold mt-3">EXPERIENCE</Typography>
 
             <Box sx={{ mt: 1 }}>
-              <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>Senior Software Developer | Dynamo Software, Watertown, MA | 2024 – 2025</Typography>
+              <Typography variant="subtitle1" className="font-bold">Senior Software Developer | Dynamo Software, Watertown, MA | 2024 – 2025</Typography>
               <Box component="ul" sx={{ pl: 3, mt: 1 }}>
                 <li>Communicated with project managers, product owners and development team to facilitate understanding of deliverables, estimates, and prioritization for ASP.NET Core FinTech Research and Portfolio Management SaaS platform solving challenges across the alternative investment landscape.</li>
                 <li>Delivered Composite benchmarks feature to automatically populate synthetic benchmark values based on the weighted combination of constituent index values (C#, SQL Server).</li>
@@ -64,7 +67,7 @@ export default function Resume() {
             </Box>
 
             <Box sx={{ mt: 2 }}>
-              <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>Software Engineering Architect | MFS Investment Management, Boston, MA | 2007 – 2023</Typography>
+              <Typography variant="subtitle1" className="font-bold">Software Engineering Architect | MFS Investment Management, Boston, MA | 2007 – 2023</Typography>
               <Box component="ul" sx={{ pl: 3, mt: 1 }}>
                 <li>Collaborated with other developers, business analysts, and stakeholders to gather requirements and ensure successful migration of Portfolio Modelling Tool into .Net Core trading application responsible for sending 80% of company stock orders to Charles River Investment Management System running in Azure.</li>
                 <li>Took the lead in designing, architecting, and developing authorization, health check, emailing, client logging, performance recording and data retrieval of Grpc/Web API microservices for the new Modelling Tool.</li>
@@ -89,7 +92,7 @@ export default function Resume() {
             </Box>
 
             <Box sx={{ mt: 2 }}>
-              <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>Internet Developer | PG Calc Incorporated, Cambridge, MA | 2000 – 2007</Typography>
+              <Typography variant="subtitle1" className="font-bold">Internet Developer | PG Calc Incorporated, Cambridge, MA | 2000 – 2007</Typography>
               <Box component="ul" sx={{ pl: 3, mt: 1 }}>
                 <li>Ported ASP commercial charitable deduction calculator (GiftCalcs) to ASP.NET object-oriented application. Completely redesigned UI and replaced the database provider (ASP.NET, C#, JavaScript, HTML, SQL Server).</li>
                 <li>Integrated gift presentation slideshow (GiftStory) into GiftCalcs (ASP.NET, Flash). Extended GiftCalcs admin features by adding templated email broadcaster (C#, Windows service).</li>
@@ -108,13 +111,13 @@ export default function Resume() {
               </Box>
             </Box>
 
-            <Divider sx={{ my: 2 }} />
+            <Divider className="my-2" />
 
-            <Typography variant="h6" sx={{ fontWeight: 700 }}>EDUCATION</Typography>
-            <Typography variant="body1" sx={{ mt: 1 }}>B.A. in English Language and Literature | Zaporizhzhia State University, Ukraine</Typography>
-            <Typography variant="body1">Contemporary Applications Development Certification | Computer Learning Center, MA</Typography>
+            <Typography variant="h6" className="font-bold">EDUCATION</Typography>
+            <Typography variant="p" className="mt-1">B.A. in English Language and Literature | Zaporizhzhia State University, Ukraine</Typography>
+            <Typography variant="p">Contemporary Applications Development Certification | Computer Learning Center, MA</Typography>
 
-            <Typography variant="h6" sx={{ fontWeight: 700, mt: 3 }}>CERTIFICATIONS</Typography>
+            <Typography variant="h6" className="font-bold mt-3">CERTIFICATIONS</Typography>
             <Box component="ul" sx={{ pl: 3, mt: 1 }}>
               <li>Oracle University — Analytic SQL for Data Warehousing</li>
               <li>Pluralsight — Build Rich Web Applications with C# using Blazor</li>

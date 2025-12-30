@@ -1,4 +1,6 @@
-import { Box, Paper, Typography } from '@mui/material';
+import { Box } from '@/components/ui/box';
+import { Paper } from '@/components/ui/paper';
+import { Typography } from '@/components/ui/typography';
 import { useEffect } from 'react';
 import BarChartIcon from '@mui/icons-material/AreaChartOutlined';
 
@@ -16,20 +18,13 @@ export default function HRAnalyticsDashboard() {
   }, []);
 
   return (
-    <Box sx={{ px: '8px', py: 2 }}>
-      <Paper
-        elevation={2}
-        sx={{
-          p: 2,
-          borderRadius: '10px',
-          backgroundColor: '#fff',
-        }}
-      >
-        <Typography variant="h6" component="h2" sx={{ mb: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
-          HR Analytics Dashboard          
+    <Box className="px-0 py-2">
+      <Paper elevation={2} className="p-2 rounded-xl">
+        <Typography variant="h4" as="h2" className="mb-2 flex items-center gap-1">
+          HR Analytics Dashboard
           <BarChartIcon style={{ fontSize: '1.5rem' }} />
         </Typography>
-        <Typography variant="body1" sx={{ mb: 3 }}>
+        <Typography variant="p" className="mb-3">
           Advanced analytics dashboard for human resources data analysis, featuring interactive visualizations
           and key performance indicators for HR decision making.
         </Typography>

@@ -1,8 +1,9 @@
-import { Box, Paper, Typography, IconButton, Collapse, Modal } from '@mui/material';
 import { useState } from 'react';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import CloseIcon from '@mui/icons-material/Close';
+import { Button } from '@/components/ui/button';
+import { FuturisticCard } from '@/components/ui/futuristic-card';
+import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
+import { ChevronDown, ChevronUp, X } from 'lucide-react';
 import usaFlag from '../assets/usa-flag.svg';
 import angularGettingStarted from '../assets/2020-Angular-Getting-Started-small.svg';
 import angularGettingStartedLarge from '../assets/2020-Angular-Getting-Started-large.svg';
@@ -51,103 +52,59 @@ const PluralsightCard = ({ certificateImage, certificateImageLarge, topText, bot
   const [expanded, setExpanded] = useState(false);
 
   return (
-    <Paper
-      elevation={2}
-      sx={{
-        borderRadius: '8px',
-        backgroundColor: '#fff',
-        overflow: 'hidden',
-        width: '100%',
-        maxWidth: '220px',
-        transition: 'box-shadow 0.2s ease-in-out',
-        '&:hover': {
-          boxShadow: '0 4px 12px rgba(0,0,0,0.12)',
-        },
-      }}
-    >
+    <FuturisticCard className="w-full max-w-[180px]">
       {/* Header with flag and text */}
-      <Box
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: 1.5,
-          p: 1.5,
-          backgroundColor: '#e8f4fc'
-        }}
-      >
+      <div className="flex items-center gap-2 p-2 bg-accent">
         <img
           src={usaFlag}
           alt="USA Flag"
-          style={{ width: '40px', height: 'auto' }}
+          className="w-8 h-auto"
         />
-        <Box>
+        <div>
           {topText.map((line, index) => (
-            <Typography
+            <p
               key={index}
-              variant="body2"
-              sx={{
-                fontWeight: 700,
-                color: '#333',
-                lineHeight: 1.2,
-                fontSize: '0.75rem'
-              }}
+              className="font-bold text-foreground text-xs leading-tight"
             >
               {line}
-            </Typography>
+            </p>
           ))}
-        </Box>
-      </Box>
+        </div>
+      </div>
 
       {/* Certificate Image */}
-      <Box sx={{ width: '100%', cursor: 'pointer' }} onClick={() => onImageClick(certificateImageLarge, topText[0])}>
+      <div className="w-full cursor-pointer" onClick={() => onImageClick(certificateImageLarge, topText[0])}>
         <img
           src={certificateImage}
           alt="Certificate"
-          style={{ width: '100%', height: 'auto', display: 'block', transition: 'opacity 0.2s ease' }}
-          onMouseEnter={(e) => e.currentTarget.style.opacity = '0.8'}
-          onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
+          className="w-full h-auto block transition-opacity hover:opacity-80"
         />
-      </Box>
+      </div>
 
       {/* Bottom Text with Expand/Collapse */}
-      <Box sx={{ position: 'relative' }}>
-        <Collapse in={expanded}>
-          <Box sx={{ p: 1.5, pb: 3 }}>
-            <Typography
-              variant="body2"
-              sx={{
-                textAlign: 'left',
-                color: '#333',
-                lineHeight: 1.4,
-                fontSize: '0.7rem'
-              }}
-            >
-              {bottomText}
-            </Typography>
-          </Box>
-        </Collapse>
+      <div className="relative">
+        <Collapsible open={expanded} onOpenChange={setExpanded}>
+          <CollapsibleContent>
+            <div className="p-2 pb-3">
+              <p className="text-left text-foreground text-xs leading-relaxed">
+                {bottomText}
+              </p>
+            </div>
+          </CollapsibleContent>
 
-        {/* Expand/Collapse Arrow */}
-        <IconButton
-          onClick={() => setExpanded(!expanded)}
-          sx={{
-            position: 'absolute',
-            bottom: 6,
-            right: 6,
-            backgroundColor: 'rgba(255, 255, 255, 0.9)',
-            '&:hover': {
-              backgroundColor: 'rgba(255, 255, 255, 1)',
-            },
-            boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-            width: '24px',
-            height: '24px',
-          }}
-          size="small"
-        >
-          {expanded ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-        </IconButton>
-      </Box>
-    </Paper>
+          {/* Expand/Collapse Button */}
+          <CollapsibleTrigger asChild>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="absolute bottom-1.5 right-1.5 bg-card/90 hover:bg-card shadow-sm h-6 w-6 p-0"
+            >
+              {expanded ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />}
+            </Button>
+          </CollapsibleTrigger>
+        </Collapsible>
+      </div>
+    </FuturisticCard>
   );
 };
 
@@ -274,15 +231,8 @@ export default function Pluralsight() {
   ];
 
   return (
-    <Box sx={{ px: '8px', py: 2 }}>
-      <Box
-        sx={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
-          gap: 2,
-          alignItems: 'start'
-        }}
-      >
+    <div className="px-2 py-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2 items-start">
         {courses.map((course, index) => (
           <PluralsightCard
             key={index}
@@ -293,84 +243,37 @@ export default function Pluralsight() {
             onImageClick={handleImageClick}
           />
         ))}
-      </Box>
+      </div>
 
       {/* Large Image Modal */}
-      <Modal
-        open={modalOpen}
-        onClose={handleCloseModal}
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          p: 2,
-        }}
-      >
-        <Box
-          sx={{
-            position: 'relative',
-            minWidth: '600px',
-            minHeight: '400px',
-            maxWidth: '90vw',
-            maxHeight: '90vh',
-            backgroundColor: 'white',
-            borderRadius: '8px',
-            overflow: 'hidden',
-            boxShadow: '0 8px 32px rgba(0,0,0,0.3)',
-            display: 'flex',
-            flexDirection: 'column',
-          }}
-        >
-          {/* Close button */}
-          <IconButton
-            onClick={handleCloseModal}
-            sx={{
-              position: 'absolute',
-              top: 8,
-              right: 8,
-              backgroundColor: 'rgba(255, 255, 255, 0.9)',
-              zIndex: 1,
-              '&:hover': {
-                backgroundColor: 'rgba(255, 255, 255, 1)',
-              },
-            }}
-          >
-            <CloseIcon />
-          </IconButton>
+      <Dialog open={modalOpen} onOpenChange={handleCloseModal}>
+        <DialogContent className="max-w-2xl max-h-[80vh] p-0">
+          <div className="relative min-h-[300px] bg-background rounded-lg overflow-hidden">
+            {/* Close button */}
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleCloseModal}
+              className="absolute top-2 right-2 bg-card/90 hover:bg-card shadow-sm z-10 h-8 w-8 p-0"
+            >
+              <X className="h-4 w-4" />
+            </Button>
 
-          {/* Large image */}
-          <Box
-            sx={{
-              flex: 1,
-              width: '100%',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              p: 2,
-              backgroundColor: '#f5f5f5',
-            }}
-          >
-            {selectedImage ? (
-              <>
+            {/* Large image */}
+            <div className="flex items-center justify-center p-4 min-h-[250px]">
+              {selectedImage ? (
                 <img
                   src={selectedImage}
                   alt={selectedTitle}
-                  style={{
-                    maxWidth: '100%',
-                    maxHeight: '100%',
-                    objectFit: 'contain',
-                    borderRadius: '4px',
-                    boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-                  }}
+                  className="max-w-full max-h-full object-contain rounded shadow-lg"
                 />
-              </>
-            ) : (
-              <Typography>Loading image...</Typography>
-            )}
-          </Box>
-
-        </Box>
-      </Modal>
-    </Box>
+              ) : (
+                <p className="text-muted-foreground">Loading image...</p>
+              )}
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+    </div>
   );
 }

@@ -1,19 +1,12 @@
-import { useState, useEffect, useCallback } from 'react';
-import { Modal, Paper, Typography, Box, IconButton, CircularProgress } from '@mui/material';
-import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
-import NavigateNextIcon from '@mui/icons-material/NavigateNext';
-import FirstPageIcon from '@mui/icons-material/FirstPage';
-import LastPageIcon from '@mui/icons-material/LastPage';
-import CloseIcon from '@mui/icons-material/Close';
-import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-import PauseIcon from '@mui/icons-material/Pause';
-import SlideshowIcon from '@mui/icons-material/Slideshow';
-import ZoomInIcon from '@mui/icons-material/ZoomIn';
-import ZoomOutIcon from '@mui/icons-material/ZoomOut';
-import PrintIcon from '@mui/icons-material/Print';
-import DownloadIcon from '@mui/icons-material/Download';
-import FullscreenIcon from '@mui/icons-material/Fullscreen';
-import FullscreenExitIcon from '@mui/icons-material/FullscreenExit';
+import { useState, useEffect, useCallback, useMemo } from 'react';
+import { Box } from '@/components/ui/box';
+import { Typography } from '@/components/ui/typography';
+import { Paper } from '@/components/ui/paper';
+import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator } from '@/components/ui/dropdown-menu';
+import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, X, Play, Pause, Presentation, ZoomIn, ZoomOut, Printer, Download, Maximize, Minimize, Shuffle } from 'lucide-react';
+import SVGSpriteSlideshow, { TransitionType, transitionVariants } from './SVGSpriteSlideshow';
 
 interface SVGSpriteViewerModalProps {
   open: boolean;
@@ -37,8 +30,9 @@ export default function SVGSpriteViewerModal({
   const [loading, setLoading] = useState<boolean>(false);
   const [isPresenting, setIsPresenting] = useState<boolean>(false);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
-  const [scale, setScale] = useState<number>(1.0);
+  const [scale, setScale] = useState<number>(1.5);
   const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
+  const [transitionType, setTransitionType] = useState<TransitionType>('random');
 
   // Load individual slide file
   const loadSlide = useCallback(async (slideNumber: number) => {
@@ -46,20 +40,42 @@ export default function SVGSpriteViewerModal({
 
     setLoading(true);
     try {
+      // Files in public folder are served from root - use correct case extension
       const slideUrl = `${slideDirectory}/Slide${slideNumber}.SVG`;
-      console.log('Loading slide:', slideUrl);
+      console.log('Loading slide from:', slideUrl);
 
       const response = await fetch(slideUrl);
       if (!response.ok) {
-        throw new Error(`Failed to load slide ${slideNumber}: ${response.status}`);
+        throw new Error(`Failed to load slide ${slideNumber}: ${response.status} ${response.statusText}`);
       }
 
       const svgContent = await response.text();
-      setCurrentSlideContent(svgContent);
-      console.log('Loaded slide', slideNumber, 'content length:', svgContent.length);
+      console.log('Loaded slide content length:', svgContent.length);
+
+      // Basic validation
+      if (svgContent.length < 100) {
+        throw new Error(`Slide ${slideNumber} content seems too small (${svgContent.length} chars)`);
+      }
+
+      // Ensure SVG has proper dimensions for display
+      let processedContent = svgContent;
+      if (svgContent.includes('<svg')) {
+        // If SVG doesn't have width/height, add them
+        if (!svgContent.includes('width=')) {
+          processedContent = processedContent.replace('<svg', '<svg width="800" height="600"');
+        }
+        // If SVG doesn't have viewBox, add one
+        if (!svgContent.includes('viewBox=')) {
+          processedContent = processedContent.replace('<svg', '<svg viewBox="0 0 800 600"');
+        }
+      }
+      setCurrentSlideContent(processedContent);
     } catch (error) {
-      console.error('Error loading slide', slideNumber, ':', error);
-      setCurrentSlideContent(`<div style="color: red; padding: 20px; text-align: center;">Error loading slide ${slideNumber}</div>`);
+      console.error('Error loading slide:', error);
+      setCurrentSlideContent(`<div style="color: hsl(var(--destructive)); padding: 20px; text-align: center; font-family: var(--font-sans);">
+        <h3>Failed to Load Slide ${slideNumber}</h3>
+        <p>${error instanceof Error ? error.message : 'Unknown error'}</p>
+      </div>`);
     } finally {
       setLoading(false);
     }
@@ -196,168 +212,297 @@ export default function SVGSpriteViewerModal({
     }
   };
 
+  // No need for content transformation - we'll use CSS transform instead
+
   const displayPageNumber = currentSlideIndex + 1;
   const totalSlides = slideCount || 0;
 
   return (
-    <Modal
-      open={open}
-      onClose={onClose}
-      sx={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        ...(isFullscreen && {
-          '& .MuiModal-backdrop': {
-            backgroundColor: 'rgba(0, 0, 0, 1)',
-          },
-        }),
-      }}
-    >
-      <Paper
-        sx={{
-          width: isFullscreen ? '100vw' : '95%',
-          height: isFullscreen ? '100vh' : '95%',
-          maxWidth: isFullscreen ? 'none' : '1400px',
-          maxHeight: isFullscreen ? 'none' : '900px',
-          position: 'relative',
-          display: 'flex',
-          flexDirection: 'column',
-          borderRadius: isFullscreen ? 0 : '8px',
-          overflow: 'hidden',
-        }}
-      >
+    <Dialog open={open} onOpenChange={onClose}>
+      <DialogContent className={`${
+        isFullscreen
+          ? 'w-screen h-screen max-w-none rounded-none bg-black [&>button]:hidden'
+          : 'w-[95vw] h-[95vh] max-w-[1400px] max-h-[900px] [&>button]:hidden'
+      } flex flex-col overflow-hidden transition-all duration-300 p-0 gap-0 bg-card`}>
+        {/* Hidden DialogTitle for accessibility */}
+        <DialogTitle className="sr-only">
+          {title || 'Presentation Viewer'}
+        </DialogTitle>
+
         {/* Header */}
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            p: 0.5,
-            backgroundColor: '#f5f5f5',
-            borderBottom: '1px solid #e0e0e0',
-            minHeight: '40px',
-          }}
-        >
+        <div className="flex justify-between items-center p-1 bg-card border-b border-border min-h-8 mb-0">
           {/* Left: Navigation */}
           {!isPresenting && (
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-              <IconButton onClick={goToFirstSlide} disabled={currentSlideIndex <= 0} size="small" title="First Slide">
-                <FirstPageIcon />
-              </IconButton>
-              <IconButton onClick={goToPrevSlide} disabled={currentSlideIndex <= 0} size="small" title="Previous Slide">
-                <NavigateBeforeIcon />
-              </IconButton>
-              <Typography variant="body2" sx={{ minWidth: '40px', textAlign: 'center' }}>
-                {displayPageNumber} / {totalSlides}
-              </Typography>
-              <IconButton onClick={goToNextSlide} disabled={currentSlideIndex >= totalSlides - 1} size="small" title="Next Slide">
-                <NavigateNextIcon />
-              </IconButton>
-              <IconButton onClick={goToLastSlide} disabled={currentSlideIndex >= totalSlides - 1} size="small" title="Last Slide">
-                <LastPageIcon />
-              </IconButton>
-            </Box>
+            <div className="flex items-center gap-0.5">
+              <Button onClick={goToFirstSlide} disabled={currentSlideIndex <= 0} size="sm" variant="ghost" className="h-7 w-7 p-0" title="First Slide">
+                <ChevronsLeft className="h-3.5 w-3.5" />
+              </Button>
+              <Button onClick={goToPrevSlide} disabled={currentSlideIndex <= 0} size="sm" variant="ghost" className="h-7 w-7 p-0" title="Previous Slide">
+                <ChevronLeft className="h-3.5 w-3.5" />
+              </Button>
+              <span className="min-w-8 text-center text-xs px-1 text-foreground">
+                {displayPageNumber}/{totalSlides}
+              </span>
+              <Button onClick={goToNextSlide} disabled={currentSlideIndex >= totalSlides - 1} size="sm" variant="ghost" className="h-7 w-7 p-0" title="Next Slide">
+                <ChevronRight className="h-3.5 w-3.5" />
+              </Button>
+              <Button onClick={goToLastSlide} disabled={currentSlideIndex >= totalSlides - 1} size="sm" variant="ghost" className="h-7 w-7 p-0" title="Last Slide">
+                <ChevronsRight className="h-3.5 w-3.5" />
+              </Button>
+            </div>
           )}
 
           {/* Center: Zoom and Presentation Controls */}
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <div className="flex items-center gap-0.5">
             {/* Zoom Controls - show in both modes */}
-            <IconButton onClick={zoomOut} disabled={scale <= 0.5} size="small" title="Zoom Out">
-              <ZoomOutIcon />
-            </IconButton>
-            <Typography variant="body2" sx={{ minWidth: '35px', textAlign: 'center', fontSize: '0.75rem' }}>
+            <Button onClick={zoomOut} disabled={scale <= 0.5} size="sm" variant="ghost" className="h-7 w-7 p-0" title="Zoom Out">
+              <ZoomOut className="h-3.5 w-3.5" />
+            </Button>
+            <span className="min-w-8 text-center text-xs px-0.5 text-foreground">
               {Math.round(scale * 100)}%
-            </Typography>
-            <IconButton onClick={zoomIn} disabled={scale >= 3.0} size="small" title="Zoom In">
-              <ZoomInIcon />
-            </IconButton>
+            </span>
+            <Button onClick={zoomIn} disabled={scale >= 3.0} size="sm" variant="ghost" className="h-7 w-7 p-0" title="Zoom In">
+              <ZoomIn className="h-3.5 w-3.5" />
+            </Button>
+
+            {/* Transition Type Selector */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  className="h-7 px-2 text-xs"
+                  title={`Transition: ${transitionType === 'random' ? 'Random' : transitionType} (click to select)`}
+                >
+                  <Shuffle className="h-3.5 w-3.5 mr-1" />
+                  {transitionType === 'random' ? 'Random' : transitionType}
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-96 p-2" align="end">
+                <div className="grid grid-cols-4 gap-1">
+                  {/* Random - Special highlighted category */}
+                  <div className="space-y-1 col-span-4 border-b border-primary/30 pb-2 mb-2">
+                    <div className="text-xs font-bold text-primary px-2 py-1 bg-primary/10 rounded">✨ RANDOM</div>
+                    <DropdownMenuItem
+                      onClick={() => setTransitionType('random')}
+                      className={`text-sm font-semibold ${transitionType === 'random' ? 'bg-primary text-primary-foreground' : 'bg-accent'}`}
+                    >
+                      🎲 Random Transition
+                    </DropdownMenuItem>
+                  </div>
+
+                  {/* Subtle & Professional */}
+                  <div className="space-y-1">
+                    <div className="text-xs font-medium text-muted-foreground px-2 py-1">Subtle</div>
+                    {transitionVariants.slice(0, 3).map((variant) => (
+                      <DropdownMenuItem
+                        key={variant.name}
+                        onClick={() => setTransitionType(variant.name as TransitionType)}
+                        className={`text-xs ${transitionType === variant.name ? 'bg-accent' : ''}`}
+                      >
+                        {variant.name}
+                      </DropdownMenuItem>
+                    ))}
+                  </div>
+
+                  {/* Directional Push */}
+                  <div className="space-y-1">
+                    <div className="text-xs font-medium text-muted-foreground px-2 py-1">Push</div>
+                    {transitionVariants.slice(3, 7).map((variant) => (
+                      <DropdownMenuItem
+                        key={variant.name}
+                        onClick={() => setTransitionType(variant.name as TransitionType)}
+                        className={`text-xs ${transitionType === variant.name ? 'bg-accent' : ''}`}
+                      >
+                        {variant.name}
+                      </DropdownMenuItem>
+                    ))}
+                  </div>
+
+                  {/* Zoom & Scale */}
+                  <div className="space-y-1">
+                    <div className="text-xs font-medium text-muted-foreground px-2 py-1">Zoom</div>
+                    {transitionVariants.slice(7, 10).map((variant) => (
+                      <DropdownMenuItem
+                        key={variant.name}
+                        onClick={() => setTransitionType(variant.name as TransitionType)}
+                        className={`text-xs ${transitionType === variant.name ? 'bg-accent' : ''}`}
+                      >
+                        {variant.name}
+                      </DropdownMenuItem>
+                    ))}
+                  </div>
+
+                  {/* 3D & Perspective */}
+                  <div className="space-y-1">
+                    <div className="text-xs font-medium text-muted-foreground px-2 py-1">3D</div>
+                    {transitionVariants.slice(10, 14).map((variant) => (
+                      <DropdownMenuItem
+                        key={variant.name}
+                        onClick={() => setTransitionType(variant.name as TransitionType)}
+                        className={`text-xs ${transitionType === variant.name ? 'bg-accent' : ''}`}
+                      >
+                        {variant.name}
+                      </DropdownMenuItem>
+                    ))}
+                  </div>
+
+                  {/* Wipes & Masks */}
+                  <div className="space-y-1">
+                    <div className="text-xs font-medium text-muted-foreground px-2 py-1">Wipes</div>
+                    {transitionVariants.slice(14, 17).map((variant) => (
+                      <DropdownMenuItem
+                        key={variant.name}
+                        onClick={() => setTransitionType(variant.name as TransitionType)}
+                        className={`text-xs ${transitionType === variant.name ? 'bg-accent' : ''}`}
+                      >
+                        {variant.name}
+                      </DropdownMenuItem>
+                    ))}
+                  </div>
+
+                  {/* Dynamic & Playful */}
+                  <div className="space-y-1">
+                    <div className="text-xs font-medium text-muted-foreground px-2 py-1">Dynamic</div>
+                    {transitionVariants.slice(17, 20).map((variant) => (
+                      <DropdownMenuItem
+                        key={variant.name}
+                        onClick={() => setTransitionType(variant.name as TransitionType)}
+                        className={`text-xs ${transitionType === variant.name ? 'bg-accent' : ''}`}
+                      >
+                        {variant.name}
+                      </DropdownMenuItem>
+                    ))}
+                  </div>
+
+                  {/* Sci-Fi / Tech */}
+                  <div className="space-y-1">
+                    <div className="text-xs font-medium text-muted-foreground px-2 py-1">Sci-Fi</div>
+                    {transitionVariants.slice(20, 23).map((variant) => (
+                      <DropdownMenuItem
+                        key={variant.name}
+                        onClick={() => setTransitionType(variant.name as TransitionType)}
+                        className={`text-xs ${transitionType === variant.name ? 'bg-accent' : ''}`}
+                      >
+                        {variant.name}
+                      </DropdownMenuItem>
+                    ))}
+                  </div>
+
+                  {/* Misc / Creative */}
+                  <div className="space-y-1">
+                    <div className="text-xs font-medium text-muted-foreground px-2 py-1">Creative</div>
+                    {transitionVariants.slice(23).map((variant) => (
+                      <DropdownMenuItem
+                        key={variant.name}
+                        onClick={() => setTransitionType(variant.name as TransitionType)}
+                        className={`text-xs ${transitionType === variant.name ? 'bg-accent' : ''}`}
+                      >
+                        {variant.name}
+                      </DropdownMenuItem>
+                    ))}
+                  </div>
+                </div>
+              </DropdownMenuContent>
+            </DropdownMenu>
 
             {/* Presentation Controls */}
             {isPresenting ? (
               <>
-                <IconButton onClick={togglePlayPause} size="small" color="primary" title={isPlaying ? 'Pause' : 'Play'}>
-                  {isPlaying ? <PauseIcon /> : <PlayArrowIcon />}
-                </IconButton>
-                <Typography variant="body2" sx={{ minWidth: '50px', fontSize: '0.7rem' }}>
+                <Button onClick={togglePlayPause} size="sm" variant="default" className="h-7 px-2" title={isPlaying ? 'Pause' : 'Play'}>
+                  {isPlaying ? <Pause className="h-3.5 w-3.5" /> : <Play className="h-3.5 w-3.5" />}
+                </Button>
+                <span className="text-xs px-1 hidden sm:inline text-foreground">
                   {isPlaying ? 'Playing' : 'Paused'}
-                </Typography>
+                </span>
               </>
             ) : (
-              <IconButton onClick={startPresentation} size="small" color="primary" title="Start Presentation">
-                <SlideshowIcon />
-              </IconButton>
+              <Button onClick={startPresentation} size="sm" variant="default" className="h-7 px-2" title="Start Presentation">
+                <Presentation className="h-3.5 w-3.5" />
+              </Button>
             )}
-          </Box>
+          </div>
 
           {/* Right: Actions */}
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <div className="flex items-center gap-0.5">
             {/* Actions - only show when not presenting */}
             {!isPresenting && (
               <>
-                <IconButton onClick={handleDownload} size="small" title="Download PDF">
-                  <DownloadIcon />
-                </IconButton>
-                <IconButton onClick={handlePrint} size="small" title="Print All Slides">
-                  <PrintIcon />
-                </IconButton>
-                <IconButton onClick={toggleFullscreen} size="small" title={isFullscreen ? "Exit Fullscreen" : "Enter Fullscreen"}>
-                  {isFullscreen ? <FullscreenExitIcon /> : <FullscreenIcon />}
-                </IconButton>
+                <Button onClick={handleDownload} size="sm" variant="ghost" className="h-7 w-7 p-0" title="Download PDF">
+                  <Download className="h-3.5 w-3.5" />
+                </Button>
+                <Button onClick={handlePrint} size="sm" variant="ghost" className="h-7 w-7 p-0" title="Print All Slides">
+                  <Printer className="h-3.5 w-3.5" />
+                </Button>
+                <Button onClick={toggleFullscreen} size="sm" variant="ghost" className="h-7 w-7 p-0" title={isFullscreen ? "Exit Fullscreen" : "Enter Fullscreen"}>
+                  {isFullscreen ? <Minimize className="h-3.5 w-3.5" /> : <Maximize className="h-3.5 w-3.5" />}
+                </Button>
               </>
             )}
-            <IconButton onClick={isPresenting ? stopPresentation : onClose} size="small" title={isPresenting ? "Exit Presentation" : "Close"}>
-              <CloseIcon />
-            </IconButton>
-          </Box>
-        </Box>
+            <Button onClick={isPresenting ? stopPresentation : onClose} size="sm" variant="ghost" className="h-7 w-7 p-0" title={isPresenting ? "Exit Presentation" : "Close"}>
+              <X className="h-3.5 w-3.5" />
+            </Button>
+          </div>
+        </div>
 
         {/* Slide Content */}
-        <Box
-          sx={{
-            flex: 1,
-            overflow: 'auto', // Always allow scrolling for zoomed content
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: scale > 1 ? 'flex-start' : 'center', // Align to top when zoomed for better scrolling
-            backgroundColor: '#f9f9f9',
-            p: scale > 1 ? 0.5 : 2, // Reduce padding when zoomed
-            minHeight: 0, // Allow flex shrinking
-          }}
-        >
+        <div className="flex-1 overflow-auto flex justify-center items-center bg-background p-4">
           {loading ? (
-            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <CircularProgress />
-              <Typography sx={{ ml: 2 }}>Loading slide...</Typography>
-            </Box>
+            <div className="flex items-center">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+              <span className="ml-2 text-muted-foreground">Loading slide...</span>
+            </div>
           ) : currentSlideContent ? (
-            <Box
-              key={`slide-${currentSlideIndex}-${scale}`} // Force re-render on slide or scale change
-              sx={{
-                width: '100%',
-                height: '100%',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                '& svg': {
-                  width: `${100 * scale}%`,
-                  height: `${100 * scale}%`,
-                  maxWidth: scale > 1 ? `${100 * scale}%` : '100%',
-                  maxHeight: scale > 1 ? `${100 * scale}%` : '100%',
-                  backgroundColor: 'white',
-                  boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-                  borderRadius: '4px',
-                  transition: 'all 0.2s ease-in-out',
-                  flexShrink: 0, // Prevent SVG from shrinking
-                }
-              }}
-              dangerouslySetInnerHTML={{ __html: currentSlideContent }}
-            />
+            currentSlideContent.includes('<div style="color: red') ? (
+              <div dangerouslySetInnerHTML={{ __html: currentSlideContent }} />
+            ) : (
+              <div
+                key={`slide-${currentSlideIndex}-${scale}`}
+                className={`w-full h-full flex justify-center items-center ${
+                  isFullscreen ? 'overflow-hidden p-0' : 'overflow-auto p-4'
+                }`}
+              >
+                  <div
+                    style={{
+                      width: '100%',
+                      height: isFullscreen ? '95vh' : '100%', // Use full available height
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: isFullscreen ? 'flex-start' : 'center',
+                      backgroundColor: isFullscreen ? 'transparent' : 'hsl(var(--card))', // No background in fullscreen
+                      borderRadius: isFullscreen ? '0' : '8px',
+                      boxShadow: isFullscreen ? 'none' : '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+                      overflow: 'hidden',
+                      marginTop: isFullscreen ? '2.5vh' : '0' // Smaller margin for better use of space
+                    }}
+                >
+                  <div
+                    style={{
+                      transform: `scale(${scale})`,
+                      transformOrigin: 'center center',
+                      transition: 'transform 0.2s ease-in-out',
+                      width: '100%',
+                      height: '100%',
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: isFullscreen ? 'flex-start' : 'center'
+                    }}
+                  >
+                    <SVGSpriteSlideshow
+                      currentSlide={currentSlideIndex}
+                      svgContent={currentSlideContent}
+                      transitionType={transitionType}
+                      className="w-full h-full"
+                    />
+                  </div>
+                </div>
+              </div>
+            )
           ) : (
-            <Typography>No slides to display</Typography>
+            <span className="text-muted-foreground">No slides to display</span>
           )}
-        </Box>
-      </Paper>
-    </Modal>
+        </div>
+      </DialogContent>
+    </Dialog>
   );
 }

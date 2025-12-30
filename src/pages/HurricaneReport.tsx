@@ -1,4 +1,7 @@
-import { Box, Typography, Paper, Button } from '@mui/material';
+import { Box } from '@/components/ui/box';
+import { Typography } from '@/components/ui/typography';
+import { Paper } from '@/components/ui/paper';
+import { Button } from '@/components/ui/button';
 import { useState } from 'react';
 import SlideshowIcon from '@mui/icons-material/Slideshow';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -17,31 +20,23 @@ export default function HurricaneReport() {
   // They are loaded dynamically by SVGSpriteViewerModal
 
   return (
-    <Box sx={{ px: '8px', py: 2 }}>
-      <Paper
-        elevation={2}
-        sx={{
-          p: 4,
-          borderRadius: '10px',
-          backgroundColor: '#fff',
-        }}
-      >
-        <Typography variant="h6" component="h1" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+    <Box className="px-0 py-2">
+      <Paper elevation={2} className="p-4 rounded-xl">
+        <Typography variant="h4" as="h1" className="flex items-center gap-1">
           Hurricane Report
           <FontAwesomeIcon icon={faTornado} style={{ fontSize: '1.2rem' }} />
         </Typography>
 
-        <Typography variant="body1" sx={{ mt: 2, mb: 3 }}>
+        <Typography variant="p" className="mt-2 mb-3">
           Excel report based on the NOAA Best Track Data to identify all hurricanes that have made landfall in Florida since 1900 for risk assessment and emergency planning.
         </Typography>
 
-        <Box sx={{ mt: 3, mb: 3 }}>
+        <Box className="mt-3 mb-3">
           <Button
-            variant="outlined"
-            size="small"
-            startIcon={<SlideshowIcon />}
+            variant="glowSimple"
+            size="sm"
             onClick={() => setPresentationOpen(true)}
-            sx={{ mt: 0, mr: 2 }}
+            className="mt-0 mr-2"
           >
             View Presentation
           </Button>

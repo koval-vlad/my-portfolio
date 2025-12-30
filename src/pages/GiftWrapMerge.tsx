@@ -1,37 +1,32 @@
-import { Box, Typography, Paper } from '@mui/material';
+import { Box } from '@/components/ui/box';
+import { Typography } from '@/components/ui/typography';
+import { Paper } from '@/components/ui/paper';
 import { HiDatabase, HiSwitchHorizontal } from 'react-icons/hi';
 
 export default function GiftWrapMerge() {
   return (
-    <Box sx={{ px: '8px', py: 2 }}>
-      <Paper
-        elevation={2}
-        sx={{
-          p: 4,
-          borderRadius: '10px',
-          backgroundColor: '#fff',
-        }}
-      >
-        <Typography variant="h6" component="h1" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+    <Box className="px-0 py-2">
+      <Paper elevation={2} className="p-4 rounded-xl">
+        <Typography variant="h4" as="h1" className="flex items-center gap-1">
           GiftWrap Merge
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+          <Box className="flex items-center gap-0.5">
             <HiDatabase style={{ fontSize: '1.2rem' }} />
             <HiSwitchHorizontal style={{ fontSize: '1.2rem' }} />
             <HiDatabase style={{ fontSize: '1.2rem' }} />
           </Box>
         </Typography>
 
-        <Box sx={{ mt: 3 }}>          
-          <Typography variant="body1" sx={{ mb: 1 }}>
+        <Box className="mt-3">          
+          <Typography variant="p" className="mb-1">
             • Programmed commercial application to transfer data from one GiftWrap database into another (C#, SQL Server)
           </Typography>
-          <Typography variant="body1" sx={{ mb: 1 }}>
+          <Typography variant="p" className="mb-1">
             • Applied predefined logic to analyze and modify the incoming data on the client (Typed DataSet, XML files) before bulk inserting it into the target database
           </Typography>
-          <Typography variant="body1" sx={{ mb: 1 }}>
+          <Typography variant="p" className="mb-1">
             • Displayed the process steps on the screen and logged them into the file
           </Typography>
-          <Typography variant="body1" sx={{ mb: 1 }}>
+          <Typography variant="p" className="mb-1">
             • Created the HTML report with the merge results and errors that have occurred during the data transfer
           </Typography>
         </Box>

@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { Box, Button, Menu } from '@mui/material';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import { Box } from '@/components/ui/box';
+import { Button } from '@/components/ui/button';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { ChevronDown, ChevronUp } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import ProjectSubmenu from './ProjectSubmenu';
 import ResumeSubmenu from './ResumeSubmenu';
@@ -13,19 +14,15 @@ interface DesktopNavProps {
 
 export default function DesktopNav({ currentPath }: DesktopNavProps) {
   const navigate = useNavigate();
-  const [anchorEl, setAnchorEl] = useState<{
-    [key: string]: HTMLElement | null;
-  }>({});
+  const [openMenus, setOpenMenus] = useState<Record<string, boolean>>({});
 
-  const handleMenuOpen = (event: React.MouseEvent<HTMLElement>, menuName: string) => {
-    setAnchorEl({ ...anchorEl, [menuName]: event.currentTarget });
+  const handleMenuToggle = (menuKey: string, open: boolean) => {
+    setOpenMenus(prev => ({ ...prev, [menuKey]: open }));
   };
 
-  const handleMenuClose = (menuName: string) => {
-    setAnchorEl({ ...anchorEl, [menuName]: null });
+  const handleCloseMenu = (menuKey: string) => {
+    setOpenMenus(prev => ({ ...prev, [menuKey]: false }));
   };
-
-  const isMenuOpen = (menuName: string) => Boolean(anchorEl[menuName]);
 
   const menuItems = [
     { label: 'Home', path: '/', expandable: false, category: '' },
@@ -42,127 +39,58 @@ export default function DesktopNav({ currentPath }: DesktopNavProps) {
   };
 
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        gap: 0.5,
-        backgroundColor: '#e0e0e0',
-        borderRadius: 2,
-        p: 0.5,
-      }}
-    >
+    <Box className="flex gap-0.5 bg-muted rounded-xl p-0.5">
       {menuItems.map((item) => (
         <Box key={item.label}>
-          <Button
-            onClick={(e) => {
-              if (item.expandable) {
-                handleMenuOpen(e, item.label);
-              } else {
-                navigate(item.path);
-              }
-            }}
-            endIcon={
-              item.expandable ? (
-                isMenuOpen(item.label) ? (
-                  <KeyboardArrowUpIcon sx={{ color: '#000' }} />
-                ) : (
-                  <KeyboardArrowDownIcon sx={{ color: '#000' }} />
-                )
-              ) : null
-            }
-            sx={{
-              color: isActive(item.path) ? '#1976d2' : '#000',
-              textTransform: 'none',
-              fontSize: '0.95rem',
-              fontWeight: 500,
-              px: 2,
-              py: 1,
-              borderRadius: 1.5,
-              '&:hover': {
-                backgroundColor: '#bdbdbd',
-              },
-            }}
-          >
-            {item.label}
-          </Button>
-
-          {item.expandable && item.label !== 'Resume' && item.label !== 'Education' && (
-            <Menu
-              anchorEl={anchorEl[item.label]}
-              open={isMenuOpen(item.label)}
-              onClose={() => handleMenuClose(item.label)}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
-              }}
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
-              }}
-              PaperProps={{
-                sx: {
-                  mt: 1,
-                  borderRadius: 2,
-                  boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
-                },
-              }}
+          {item.expandable ? (
+            <DropdownMenu open={openMenus[item.label] || false} onOpenChange={(open) => handleMenuToggle(item.label, open)}>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="ghost"
+                  className="text-sm font-medium px-2 py-1 transition-colors text-foreground hover:bg-accent hover:rounded-lg"
+                >
+                  {item.label}
+                  {openMenus[item.label] ? (
+                    <ChevronUp className="ml-1 h-4 w-4" />
+                  ) : (
+                    <ChevronDown className="ml-1 h-4 w-4" />
+                  )}
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent
+                side="bottom"
+                align="start"
+                avoidCollisions={true}
+                collisionPadding={16}
+                sideOffset={8}
+                className="bg-white border rounded-xl shadow-lg p-0 animate-in slide-in-from-top-2 fade-in duration-200 z-50"
+                style={{
+                  maxWidth: 'calc(100vw - 12rem)',
+                  overflow: 'hidden'
+                }}
+              >
+                {item.label === 'Education' && (
+                  <EducationSubmenu onClose={() => handleCloseMenu(item.label)} />
+                )}
+                {item.label === 'Resume' && (
+                  <ResumeSubmenu onClose={() => handleCloseMenu(item.label)} />
+                )}
+                {item.label !== 'Resume' && item.label !== 'Education' && (
+                  <ProjectSubmenu
+                    category={item.category}
+                    onClose={() => handleCloseMenu(item.label)}
+                  />
+                )}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <Button
+              variant="ghost"
+              onClick={() => navigate(item.path)}
+              className="text-sm font-medium px-2 py-1 transition-colors text-foreground hover:bg-accent hover:rounded-lg"
             >
-              <ProjectSubmenu
-                category={item.category}
-                onClose={() => handleMenuClose(item.label)}
-              />
-            </Menu>
-          )}
-
-          {item.label === 'Education' && (
-            <Menu
-              anchorEl={anchorEl[item.label]}
-              open={isMenuOpen(item.label)}
-              onClose={() => handleMenuClose(item.label)}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
-              }}
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
-              }}
-              PaperProps={{
-                sx: {
-                  mt: 1,
-                  borderRadius: 3,
-                  boxShadow: '0 8px 24px rgba(0,0,0,0.12)',
-                  overflow: 'visible',
-                },
-              }}
-            >
-              <EducationSubmenu onClose={() => handleMenuClose(item.label)} />
-            </Menu>
-          )}
-
-          {item.label === 'Resume' && (
-            <Menu
-              anchorEl={anchorEl[item.label]}
-              open={isMenuOpen(item.label)}
-              onClose={() => handleMenuClose(item.label)}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
-              }}
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
-              }}
-              PaperProps={{
-                sx: {
-                  mt: 1,
-                  borderRadius: 2,
-                  boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
-                },
-              }}
-            >
-              <ResumeSubmenu onClose={() => handleMenuClose(item.label)} />
-            </Menu>
+              {item.label}
+            </Button>
           )}
         </Box>
       ))}

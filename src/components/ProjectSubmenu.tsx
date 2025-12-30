@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
-import { Box, Card, CardMedia, CardContent, Typography, Fade } from '@mui/material';
+import { Box } from '@/components/ui/box';
+import { FuturisticCard } from '@/components/ui/futuristic-card';
+import { Typography } from '@/components/ui/typography';
 import { useNavigate } from 'react-router-dom';
 
 // Tableau images
@@ -64,7 +66,7 @@ export default function ProjectSubmenu({ category, onClose }: ProjectSubmenuProp
   const [visibleItems, setVisibleItems] = useState<number[]>([]);
 
   const projects = projectData[category] || [];
-  const columnCount = category === 'dotnet' ? 5 : category === 'vb' ? 2 : 3;
+  const columnCount = category === 'dotnet' ? 5 : Math.min(projects.length, 5);
 
   useEffect(() => {
     setVisibleItems([]);
@@ -88,42 +90,28 @@ export default function ProjectSubmenu({ category, onClose }: ProjectSubmenuProp
   };
 
   return (
-    <Box
-      sx={{
-        display: 'grid',
-        gridTemplateColumns: `repeat(${columnCount}, 1fr)`,
-        gap: 2,
-        p: 2,
-        maxWidth: category === 'dotnet' ? 1200 : category === 'vb' ? 470 : 700,
-      }}
-    >
+    <Box className={`grid gap-3 p-4 rounded-xl bg-background ${
+      columnCount === 1 ? 'grid-cols-1' :
+      columnCount === 2 ? 'grid-cols-2' :
+      columnCount === 3 ? 'grid-cols-3' :
+      columnCount === 4 ? 'grid-cols-4' :
+      'grid-cols-5'
+    } w-max min-w-[300px] max-w-[calc(100vw-12rem)] overflow-hidden`}>
       {projects.map((project, index) => (
-        <Fade key={project.id} in={visibleItems.includes(index)} timeout={500}>
-          <Card
-            sx={{
-              cursor: 'pointer',
-              transition: 'transform 0.2s, box-shadow 0.2s',
-              width: 208,
-              '&:hover': {
-                transform: 'translateY(-4px)',
-                boxShadow: '0 6px 16px rgba(0,0,0,0.2)',
-              },
-            }}
-            onClick={() => handleProjectClick(project)}
-          >
-            <CardMedia
-              component="img"
-              image={project.image}
+        <div key={project.id} className={`transition-opacity duration-500 ${visibleItems.includes(index) ? 'opacity-100' : 'opacity-0'}`}>
+          <FuturisticCard className="cursor-pointer transition-all duration-200 w-full max-w-48 hover:-translate-y-1 hover:shadow-lg rounded-xl overflow-hidden" onClick={() => handleProjectClick(project)}>
+            <img
+              src={project.image}
               alt={project.title}
-              sx={{ width: 208, height: 160, objectFit: 'contain', backgroundColor: '#f5f5f5' }}
+              className="w-full h-32 object-contain bg-muted"
             />
-            <CardContent sx={{ p: 1.5, '&:last-child': { pb: 1.5 } }}>
-              <Typography variant="body2" align="center" fontWeight={500}>
+            <div className="p-2">
+              <Typography variant="p" className="text-center font-medium text-xs leading-tight">
                 {project.title}
               </Typography>
-            </CardContent>
-          </Card>
-        </Fade>
+            </div>
+          </FuturisticCard>
+        </div>
       ))}
     </Box>
   );

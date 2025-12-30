@@ -1,6 +1,5 @@
-import { List, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import DownloadIcon from '@mui/icons-material/Download';
+import { Box } from '@/components/ui/box';
+import { Eye, Download } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import resumePdf from '/docs/vkoval@gmail.com.Resume.pdf';
 
@@ -27,23 +26,21 @@ export default function MobileResumeSubmenu({ onClose }: MobileResumeSubmenuProp
   };
 
   return (
-    <List sx={{ pl: 2, backgroundColor: '#fafafa' }}>
-      <ListItem disablePadding>
-        <ListItemButton onClick={handleView}>
-          <ListItemIcon sx={{ minWidth: 40 }}>
-            <VisibilityIcon fontSize="small" />
-          </ListItemIcon>
-          <ListItemText primary="View" />
-        </ListItemButton>
-      </ListItem>
-      <ListItem disablePadding>
-        <ListItemButton onClick={handleDownload}>
-          <ListItemIcon sx={{ minWidth: 40 }}>
-            <DownloadIcon fontSize="small" />
-          </ListItemIcon>
-          <ListItemText primary="Download PDF" />
-        </ListItemButton>
-      </ListItem>
-    </List>
+    <Box className="w-full max-w-full overflow-hidden bg-background">
+      <button
+        onClick={handleView}
+        className="flex items-center w-full py-2 px-4 text-primary text-sm hover:bg-accent"
+      >
+        <Eye className="h-4 w-4 mr-3" />
+        View
+      </button>
+      <button
+        onClick={handleDownload}
+        className="flex items-center w-full py-2 px-4 text-primary text-sm hover:bg-accent"
+      >
+        <Download className="h-4 w-4 mr-3" />
+        Download PDF
+      </button>
+    </Box>
   );
 }

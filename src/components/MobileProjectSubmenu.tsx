@@ -1,12 +1,7 @@
 import { useState, useEffect } from 'react';
-import {
-  List,
-  ListItem,
-  ListItemButton,
-  Box,
-  Typography,
-  Fade,
-} from '@mui/material';
+import { List, ListItem } from '@/components/ui/list';
+import { Box } from '@/components/ui/box';
+import { Typography } from '@/components/ui/typography';
 import { useNavigate } from 'react-router-dom';
 
 // Tableau images
@@ -97,35 +92,28 @@ export default function MobileProjectSubmenu({
   };
 
   return (
-    <List sx={{ pl: 2, backgroundColor: '#fafafa' }}>
+    <Box className="w-full max-w-full bg-background overflow-hidden">
       {projects.map((project, index) => (
-        <Fade key={project.id} in={visibleItems.includes(index)} timeout={400}>
-          <ListItem disablePadding>
-            <ListItemButton
+        <div key={project.id} className={`transition-opacity duration-400 ${visibleItems.includes(index) ? 'opacity-100' : 'opacity-0'}`}>
+          <ListItem className="p-0">
+            <button
               onClick={() => handleProjectClick(project)}
-              sx={{
-                display: 'flex',
-                gap: 2,
-                py: 1.5,
-              }}
+              className="flex items-center justify-start gap-3 w-full h-16 px-3 rounded-md hover:bg-accent transition-colors"
             >
-              <Box
-                component="img"
+              <img
                 src={project.image}
                 alt={project.title}
-                sx={{
-                  width: 104,
-                  height: 80,
-                  objectFit: 'contain',
-                  backgroundColor: '#f5f5f5',
-                  borderRadius: 1,
-                }}
+                className="w-20 h-16 object-contain bg-muted rounded-md flex-shrink-0"
               />
-              <Typography variant="body2">{project.title}</Typography>
-            </ListItemButton>
+              <div className="flex-1 text-left flex items-center h-16">
+                <span className="font-medium text-xs leading-tight">
+                  {project.title}
+                </span>
+              </div>
+            </button>
           </ListItem>
-        </Fade>
+        </div>
       ))}
-    </List>
+    </Box>
   );
 }

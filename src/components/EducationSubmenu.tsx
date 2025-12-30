@@ -1,4 +1,5 @@
-import { Box, Typography } from '@mui/material';
+import { Box } from '@/components/ui/box';
+import { Typography } from '@/components/ui/typography';
 import { useNavigate } from 'react-router-dom';
 import educationLogo from '../assets/education.svg';
 
@@ -26,63 +27,30 @@ export default function EducationSubmenu({ onClose }: EducationSubmenuProps) {
   ];
 
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        gap: 1,
-        p: 2,
-        minWidth: 400,
-        backgroundColor: '#f8fafc',
-        borderRadius: 2,
-      }}
-    >
+    <Box className="flex gap-4 p-4 min-w-[400px] max-w-[calc(100vw-12rem)] bg-background rounded-xl">
       {/* Left side - Education logo only */}
-      <Box
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          pr: 2,
-          borderRight: '1px solid #e2e8f0',
-        }}
-      >
+      <Box className="flex items-center justify-center pr-4 border-r border-border">
         <img
           src={educationLogo}
           alt="Education Logo"
-          style={{ width: 200, height: 150, objectFit: 'contain' }}
+          className="w-32 h-24 object-contain"
         />
       </Box>
 
       {/* Right side - Two columns */}
-      <Box sx={{ display: 'flex', gap: 4, flex: 1 }}>
+      <Box className="flex gap-16 flex-1">
         {/* Secondary Education Column */}
-        <Box sx={{ minWidth: 150 }}>
-          <Typography
-            variant="subtitle2"
-            sx={{
-              fontWeight: 600,
-              color: '#000',
-              mb: 2,
-              fontSize: '0.9rem',
-            }}
-          >
+        <Box className="min-w-37.5">
+          <Typography variant="subtitle2" className="font-semibold text-foreground mb-4 text-sm">
             Secondary Education
           </Typography>
 
-          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+          <Box className="flex flex-col gap-1">
             {secondaryEducationItems.map((item) => (
               <Typography
                 key={item.path}
                 onClick={() => handleNavigation(item.path)}
-                sx={{
-                  color: '#1976d2',
-                  fontSize: '0.875rem',
-                  cursor: 'pointer',
-                  py: 0.5,
-                  '&:hover': {
-                    textDecoration: 'underline',
-                  },
-                }}
+                className="text-primary text-sm cursor-pointer py-0.5 hover:bg-accent px-1 rounded"
               >
                 {item.label}
               </Typography>
@@ -91,33 +59,17 @@ export default function EducationSubmenu({ onClose }: EducationSubmenuProps) {
         </Box>
 
         {/* Professional Development Column */}
-        <Box sx={{ minWidth: 150 }}>
-          <Typography
-            variant="subtitle2"
-            sx={{
-              fontWeight: 600,
-              color: '#000',
-              mb: 2,
-              fontSize: '0.9rem',
-            }}
-          >
+        <Box className="min-w-37.5">
+          <Typography variant="subtitle2" className="font-semibold text-foreground mb-4 text-sm">
             Professional Development
           </Typography>
 
-          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+          <Box className="flex flex-col gap-1">
             {professionalDevItems.map((item) => (
               <Typography
                 key={item.path}
                 onClick={() => handleNavigation(item.path)}
-                sx={{
-                  color: '#1976d2',
-                  fontSize: '0.875rem',
-                  cursor: 'pointer',
-                  py: 0.5,
-                  '&:hover': {
-                    textDecoration: 'underline',
-                  },
-                }}
+                className="text-primary text-sm cursor-pointer py-0.5 hover:bg-accent px-1 rounded"
               >
                 {item.label}
               </Typography>

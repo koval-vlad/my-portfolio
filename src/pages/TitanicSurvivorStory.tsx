@@ -1,4 +1,6 @@
-import { Box, Paper, Typography } from '@mui/material';
+import { Box } from '@/components/ui/box';
+import { Paper } from '@/components/ui/paper';
+import { Typography } from '@/components/ui/typography';
 import { useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShip } from '@fortawesome/free-solid-svg-icons';
@@ -17,20 +19,13 @@ export default function TitanicSurvivorStory() {
   }, []);
 
   return (
-    <Box sx={{ px: '8px', py: 2 }}>
-      <Paper
-        elevation={2}
-        sx={{
-          p: 2,
-          borderRadius: '10px',
-          backgroundColor: '#fff',
-        }}
-      >
-        <Typography variant="h6" component="h2" sx={{ mb: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
+    <Box className="px-0 py-2">
+      <Paper elevation={2} className="p-2 rounded-xl">
+        <Typography variant="h4" as="h2" className="mb-2 flex items-center gap-1">
           Titanic Survivor Story
           <FontAwesomeIcon icon={faShip} style={{ fontSize: '1.2rem' }} />
         </Typography>
-        <Typography variant="body1" sx={{ mb: 3 }}>
+        <Typography variant="p" className="mb-3">
           An interactive data story exploring the Titanic disaster through passenger data,
           survival rates, and demographic analysis.
         </Typography>

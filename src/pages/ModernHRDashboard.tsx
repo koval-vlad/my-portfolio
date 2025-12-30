@@ -1,4 +1,7 @@
-import { Box, Paper, Button, Typography } from '@mui/material';
+import { Box } from '@/components/ui/box';
+import { Paper } from '@/components/ui/paper';
+import { Button } from '@/components/ui/button';
+import { Typography } from '@/components/ui/typography';
 import { useEffect, useState } from 'react';
 import SlideshowIcon from '@mui/icons-material/Slideshow';
 import { HiOutlinePresentationChartLine } from 'react-icons/hi';
@@ -22,30 +25,22 @@ export default function ModernHRDashboard() {
   }, []);
 
   return (
-    <Box sx={{ px: '8px', py: 2 }}>
-      <Paper
-        elevation={2}
-        sx={{
-          p: 2,
-          borderRadius: '10px',
-          backgroundColor: '#fff',
-        }}
-      >
-        <Typography variant="h6" component="h2" sx={{ mb: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
-          Modern HR Dashboard          
+    <Box className="px-0 py-2">
+      <Paper elevation={2} className="p-2 rounded-xl">
+        <Typography variant="h4" as="h2" className="mb-2 flex items-center gap-1">
+          Modern HR Dashboard
           <HiOutlinePresentationChartLine style={{ fontSize: '1.5rem' }} />
         </Typography>
-        <Typography variant="body1" sx={{ mb: 3 }}>
+        <Typography variant="p" className="mb-3">
           An interactive Tableau dashboard providing comprehensive analytics for human resources management,
           including employee demographics, performance metrics, and organizational insights.
         </Typography>
-        <Box sx={{ mb: 2 }}>
+        <Box className="mb-2">
           <Button
-            variant="outlined"
-            size="small"
-            startIcon={<SlideshowIcon />}
+            variant="glow"
+            size="sm"
             onClick={() => setPresentationOpen(true)}
-            sx={{ mt: 0 }}
+            className="mt-0"
           >
             View Presentation
           </Button>

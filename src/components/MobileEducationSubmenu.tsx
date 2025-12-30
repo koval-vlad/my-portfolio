@@ -1,4 +1,5 @@
-import { List, ListItem, ListItemButton, ListItemText, Typography, Box } from '@mui/material';
+import { Box } from '@/components/ui/box';
+import { Typography } from '@/components/ui/typography';
 import { useNavigate } from 'react-router-dom';
 
 interface MobileEducationSubmenuProps {
@@ -14,74 +15,50 @@ export default function MobileEducationSubmenu({ onClose }: MobileEducationSubme
   };
 
   return (
-    <List sx={{ pl: 2, backgroundColor: '#fafafa' }}>
+    <Box className="w-full max-w-full overflow-hidden bg-background">
       {/* Secondary Education Section */}
-      <Box sx={{ px: 2, py: 1 }}>
-        <Typography
-          variant="subtitle2"
-          sx={{
-            fontWeight: 600,
-            color: '#000',
-            fontSize: '0.8rem',
-          }}
-        >
+      <Box className="px-4 py-2">
+        <Typography variant="subtitle2" className="font-semibold text-foreground text-xs">
           Secondary Education
         </Typography>
       </Box>
-      <ListItem disablePadding>
-        <ListItemButton onClick={() => handleNavigation('/education/formal-degree')} sx={{ pl: 3 }}>
-          <ListItemText 
-            primary="Formal Degree" 
-            sx={{ '& .MuiTypography-root': { color: '#1976d2', fontSize: '0.875rem' } }}
-          />
-        </ListItemButton>
-      </ListItem>
-      <ListItem disablePadding>
-        <ListItemButton onClick={() => handleNavigation('/education/certificates')} sx={{ pl: 3 }}>
-          <ListItemText 
-            primary="Certificates" 
-            sx={{ '& .MuiTypography-root': { color: '#1976d2', fontSize: '0.875rem' } }}
-          />
-        </ListItemButton>
-      </ListItem>
+      <button
+        onClick={() => handleNavigation('/education/formal-degree')}
+        className="flex items-center w-full py-2 px-6 text-primary text-sm hover:bg-accent"
+      >
+        Formal Degree
+      </button>
+      <button
+        onClick={() => handleNavigation('/education/certificates')}
+        className="flex items-center w-full py-2 px-6 text-primary text-sm hover:bg-accent"
+      >
+        Certificates
+      </button>
 
       {/* Professional Development Section */}
-      <Box sx={{ px: 2, py: 1, mt: 1 }}>
-        <Typography
-          variant="subtitle2"
-          sx={{
-            fontWeight: 600,
-            color: '#000',
-            fontSize: '0.8rem',
-          }}
-        >
+      <Box className="px-4 py-2 pt-4">
+        <Typography variant="subtitle2" className="font-semibold text-foreground text-xs">
           Professional Development
         </Typography>
       </Box>
-      <ListItem disablePadding>
-        <ListItemButton onClick={() => handleNavigation('/education/pluralsight')} sx={{ pl: 3 }}>
-          <ListItemText 
-            primary="Pluralsight" 
-            sx={{ '& .MuiTypography-root': { color: '#1976d2', fontSize: '0.875rem' } }}
-          />
-        </ListItemButton>
-      </ListItem>
-      <ListItem disablePadding>
-        <ListItemButton onClick={() => handleNavigation('/education/oracle-university')} sx={{ pl: 3 }}>
-          <ListItemText 
-            primary="Oracle University" 
-            sx={{ '& .MuiTypography-root': { color: '#1976d2', fontSize: '0.875rem' } }}
-          />
-        </ListItemButton>
-      </ListItem>
-      <ListItem disablePadding>
-        <ListItemButton onClick={() => handleNavigation('/education/other')} sx={{ pl: 3 }}>
-          <ListItemText 
-            primary="Other" 
-            sx={{ '& .MuiTypography-root': { color: '#1976d2', fontSize: '0.875rem' } }}
-          />
-        </ListItemButton>
-      </ListItem>
-    </List>
+      <button
+        onClick={() => handleNavigation('/education/pluralsight')}
+        className="flex items-center w-full py-2 px-6 text-primary text-sm hover:bg-accent"
+      >
+        Pluralsight
+      </button>
+      <button
+        onClick={() => handleNavigation('/education/oracle-university')}
+        className="flex items-center w-full py-2 px-6 text-primary text-sm hover:bg-accent"
+      >
+        Oracle University
+      </button>
+      <button
+        onClick={() => handleNavigation('/education/other')}
+        className="flex items-center w-full py-2 px-6 text-primary text-sm hover:bg-accent"
+      >
+        Other
+      </button>
+    </Box>
   );
 }

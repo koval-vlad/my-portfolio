@@ -1,15 +1,9 @@
 import { useState } from 'react';
-import {
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemText,
-  Collapse,
-  Box,
-  Divider,
-} from '@mui/material';
-import ExpandLess from '@mui/icons-material/ExpandLess';
-import ExpandMore from '@mui/icons-material/ExpandMore';
+import { List, ListItem, ListItemButton, ListItemText } from '@/components/ui/list';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
+import { Box } from '@/components/ui/box';
+import { Divider } from '@/components/ui/divider';
+import { ChevronDown, ChevronUp } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import MobileProjectSubmenu from './MobileProjectSubmenu';
 import MobileResumeSubmenu from './MobileResumeSubmenu';
@@ -48,60 +42,48 @@ export default function MobileNav({ currentPath, onClose }: MobileNavProps) {
   ];
 
   return (
-    <Box sx={{ width: 280, pt: 2 }}>
-      <List>
+    <Box className="w-full max-w-72 pt-2 overflow-hidden">
+      <List className="w-full overflow-hidden">
         {menuItems.map((item) => (
           <Box key={item.label}>
-            <ListItem disablePadding>
-              <ListItemButton
-                onClick={() => {
-                  if (item.expandable) {
-                    handleToggle(item.label);
-                  } else {
-                    handleNavigate(item.path);
-                  }
-                }}
-                sx={{
-                  backgroundColor: isActive(item.path) ? '#e3f2fd' : 'transparent',
-                  '&:hover': {
-                    backgroundColor: '#f5f5f5',
-                  },
-                }}
-              >
-                <ListItemText
-                  primary={item.label}
-                  sx={{
-                    '& .MuiTypography-root': {
-                      color: isActive(item.path) ? '#1976d2' : '#000',
-                      fontWeight: isActive(item.path) ? 600 : 400,
-                    },
-                  }}
-                />
-                {item.expandable &&
-                  (openMenus[item.label] ? <ExpandLess /> : <ExpandMore />)}
-              </ListItemButton>
-            </ListItem>
+            <Collapsible open={openMenus[item.label]} onOpenChange={() => handleToggle(item.label)}>
+              <ListItem>
+                {item.expandable ? (
+                  <CollapsibleTrigger asChild>
+                    <ListItemButton className={`justify-start ${isActive(item.path) ? 'bg-accent text-accent-foreground font-semibold' : ''}`}>
+                      <ListItemText className="text-left">{item.label}</ListItemText>
+                      {openMenus[item.label] ? <ChevronUp className="h-4 w-4 ml-auto" /> : <ChevronDown className="h-4 w-4 ml-auto" />}
+                    </ListItemButton>
+                  </CollapsibleTrigger>
+                ) : (
+                  <ListItemButton
+                    onClick={() => handleNavigate(item.path)}
+                    className={`justify-start ${isActive(item.path) ? 'bg-accent text-accent-foreground font-semibold' : ''}`}
+                  >
+                    <ListItemText className="text-left">{item.label}</ListItemText>
+                  </ListItemButton>
+                )}
+              </ListItem>
 
-            {item.expandable && item.label !== 'Resume' && item.label !== 'Education' && item.category && (
-              <Collapse in={openMenus[item.label]} timeout="auto" unmountOnExit>
-                <MobileProjectSubmenu
-                  category={item.category}
-                  onClose={onClose}
-                />
-              </Collapse>
-            )}
+              <CollapsibleContent className="w-full overflow-hidden" style={{ transition: 'all 0.2s ease-out' }}>
+                <Box className="w-full overflow-hidden">
+                  {item.expandable && item.label !== 'Resume' && item.label !== 'Education' && item.category && (
+                    <MobileProjectSubmenu
+                      category={item.category}
+                      onClose={onClose}
+                    />
+                  )}
 
-            {item.label === 'Education' && (
-              <Collapse in={openMenus[item.label]} timeout="auto" unmountOnExit>
-                <MobileEducationSubmenu onClose={onClose} />
-              </Collapse>
-            )}
+                  {item.label === 'Education' && (
+                    <MobileEducationSubmenu onClose={onClose} />
+                  )}
 
-            {item.label === 'Resume' && (
-              <Collapse in={openMenus[item.label]} timeout="auto" unmountOnExit>
-                <MobileResumeSubmenu onClose={onClose} />
-              </Collapse>
-            )}
+                  {item.label === 'Resume' && (
+                    <MobileResumeSubmenu onClose={onClose} />
+                  )}
+                </Box>
+              </CollapsibleContent>
+            </Collapsible>
 
             <Divider />
           </Box>

@@ -1,4 +1,5 @@
-import { Box, Paper, Typography } from '@mui/material';
+import { Box } from '@/components/ui/box';
+import { FuturisticCard } from '@/components/ui/futuristic-card';
 import ukrFlag from '../assets/ukr-flag.svg';
 import znuImage from '../assets/ZNU.svg';
 
@@ -27,78 +28,49 @@ export default function FormalDegree() {
   ];
 
   return (
-    <Box sx={{ px: '8px', py: 2 }}>
-      <Paper
-        elevation={2}
-        sx={{
-          borderRadius: '10px',
-          backgroundColor: '#fff',
-          overflow: 'hidden',
-          maxWidth: '800px',
-          mx: 'auto'
-        }}
-      >
+    <div className="px-4 py-4">
+      <FuturisticCard className="max-w-[600px] mx-auto">
         {/* Header with flag and text */}
-        <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: 2,
-            p: 2,
-            backgroundColor: '#e8f4fc'
-          }}
-        >
+        <div className="flex items-center gap-3 p-3 bg-accent">
           <img
             src={ukrFlag}
             alt="Ukrainian Flag"
-            style={{ width: '60px', height: 'auto' }}
+            className="w-6 h-auto"
           />
-          <Box>
-            <Typography
-              variant="body1"
-              sx={{ fontWeight: 700, color: '#333', lineHeight: 1.3 }}
-            >
+          <div>
+            <p className="font-bold text-foreground text-xs leading-tight">
               BA in English Language and Literature
-            </Typography>
-            <Typography
-              variant="body1"
-              sx={{ fontWeight: 700, color: '#333', lineHeight: 1.3 }}
-            >
+            </p>
+            <p className="font-bold text-foreground text-xs leading-tight">
               Zaporizhzhia National University (Ukraine)
-            </Typography>
-          </Box>
-        </Box>
+            </p>
+          </div>
+        </div>
 
         {/* University Image */}
-        <Box sx={{ width: '100%' }}>
+        <div className="w-full">
           <img
             src={znuImage}
             alt="Zaporizhzhia National University"
-            style={{ width: '100%', height: 'auto', display: 'block' }}
+            className="w-full h-auto block"
           />
-        </Box>
+        </div>
 
         {/* Coursework Description */}
-        <Box sx={{ p: 2 }}>
+        <div className="p-3">
           {coursework.map((item, index) => (
-            <Typography
+            <p
               key={index}
-              variant="body2"
-              sx={{
-                textAlign: 'left',
-                mb: index < coursework.length - 1 ? 1.5 : 0,
-                color: '#333',
-                lineHeight: 1.5
-              }}
+              className={`text-left text-foreground text-xs leading-relaxed ${index < coursework.length - 1 ? 'mb-1' : ''}`}
             >
-              <Box component="span" sx={{ fontWeight: 700 }}>
+              <span className="font-bold">
                 {item.title}:
-              </Box>{' '}
+              </span>{' '}
               {item.description}
-            </Typography>
+            </p>
           ))}
-        </Box>
-      </Paper>
-    </Box>
+        </div>
+      </FuturisticCard>
+    </div>
   );
 }

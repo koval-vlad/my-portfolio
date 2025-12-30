@@ -1,5 +1,7 @@
 import { useState } from 'react';
-import { Box, IconButton, Typography } from '@mui/material';
+import { Box } from '@/components/ui/box';
+import { IconButton } from '@/components/ui/icon-button';
+import { Typography } from '@/components/ui/typography';
 import ZoomInIcon from '@mui/icons-material/ZoomIn';
 import ZoomOutIcon from '@mui/icons-material/ZoomOut';
 
@@ -35,11 +37,11 @@ export default function ExcelViewer({
   return (
     <Box>
       {/* Zoom Controls */}
-      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1, mb: 1 }}>
+      <Box className="flex items-center justify-center gap-1 mb-1">
         <IconButton onClick={handleZoomOut} disabled={zoom <= minZoom} size="small" title="Zoom Out">
           <ZoomOutIcon />
         </IconButton>
-        <Typography variant="body2" sx={{ minWidth: '60px', textAlign: 'center', fontSize: '0.75rem' }}>
+        <Typography variant="small" className="min-w-15 text-center">
           {Math.round(zoom * 100)}%
         </Typography>
         <IconButton onClick={handleZoomIn} disabled={zoom >= maxZoom} size="small" title="Zoom In">
@@ -48,17 +50,8 @@ export default function ExcelViewer({
       </Box>
 
       {/* Excel Viewer Container */}
-      <Box sx={{
-        width: '100%',
-        height: `${excelContainerHeight}px`,
-        border: '1px solid #e0e0e0',
-        borderRadius: '8px',
-        overflow: 'hidden',
-        position: 'relative'
-      }}>
-        <Box sx={{
-          width: '100%',
-          height: '100%',
+      <Box className="w-full border border-gray-300 rounded-lg overflow-hidden relative" style={{ height: `${excelContainerHeight}px` }}>
+        <Box className="w-full h-full" style={{
           zoom: zoom,
           transformOrigin: 'top left'
         }}>
