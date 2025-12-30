@@ -20,6 +20,7 @@ const buttonVariants = cva(
         link: "text-primary underline-offset-4 hover:underline",
         glow: "relative bg-primary text-primary-foreground border border-primary/50 hover:bg-primary/95 transition-all duration-300 overflow-hidden group",
         glowSimple: "relative bg-primary text-primary-foreground border border-primary/50 hover:bg-primary/95 transition-all duration-300 group",
+        super3d: "",
       },
       size: {
         default: "h-10 px-4 py-2",
@@ -61,6 +62,32 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
             ref={ref}
             {...props}
           />
+        </div>
+      )
+    }
+
+    if (variant === "super3d") {
+      return (
+        <div className="relative inline-block group">
+          {/* Outer glow ring */}
+          <div className="absolute inset-0 rounded-xl blur-xl bg-gradient-to-r from-primary/70 via-primary/100 to-primary/70 opacity-0 group-hover:opacity-100 transition-all duration-300" />
+
+          <div className="perspective-distant relative z-10">
+            <Comp
+              className={cn(
+                buttonVariants({ size }),
+                "relative bg-primary text-primary-foreground italic font-bold px-8 py-4 rounded-xl border-2 border-primary/80",
+                "shadow-[0_4px_0_0_theme(colors.foreground/0.3)]",
+                "rotate-x-12 transform-gpu",
+                "hover:rotate-x-0 hover:not-italic hover:shadow-[0_4px_0_0_theme(colors.foreground/0.3)]",
+                "active:translate-y-[8px] active:shadow-none active:rotate-x-0",
+                "transition-all duration-200 ease-out",
+                className
+              )}
+              ref={ref}
+              {...props}
+            />
+          </div>
         </div>
       )
     }

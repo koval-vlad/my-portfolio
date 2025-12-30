@@ -33,6 +33,7 @@ export default function SVGSpriteViewerModal({
   const [scale, setScale] = useState<number>(1.5);
   const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
   const [transitionType, setTransitionType] = useState<TransitionType>('random');
+  const [slideInterval, setSlideInterval] = useState<number>(10); // Default 10 seconds
 
   // Load individual slide file
   const loadSlide = useCallback(async (slideNumber: number) => {
@@ -124,11 +125,11 @@ export default function SVGSpriteViewerModal({
           }
           return prev + 1;
         });
-      }, 10000); // 10 seconds
+      }, slideInterval * 1000); // Use selected interval in seconds
 
       return () => clearInterval(interval);
     }
-  }, [isPlaying, isPresenting, slideCount]);
+  }, [isPlaying, isPresenting, slideCount, slideInterval]);
 
   const goToPrevSlide = () => {
     if (currentSlideIndex > 0) {
@@ -264,6 +265,36 @@ export default function SVGSpriteViewerModal({
             <Button onClick={zoomIn} disabled={scale >= 3.0} size="sm" variant="ghost" className="h-7 w-7 p-0" title="Zoom In">
               <ZoomIn className="h-3.5 w-3.5" />
             </Button>
+
+            {/* Slide Interval Selector */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    className="h-7 px-2 text-xs"
+                    title={`Slide Interval: ${slideInterval}s (click to change)`}
+                  >
+                    ⏱️ {slideInterval}s
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-32">
+                  <div className="p-2">
+                    <div className="text-xs font-medium text-muted-foreground mb-2">Slide Interval</div>
+                    <div className="grid grid-cols-3 gap-1">
+                      {[5, 8, 10, 15, 20, 30, 45, 60].map((seconds) => (
+                        <DropdownMenuItem
+                          key={seconds}
+                          onClick={() => setSlideInterval(seconds)}
+                          className={`text-xs text-center justify-center ${slideInterval === seconds ? 'bg-accent' : ''}`}
+                        >
+                          {seconds}s
+                        </DropdownMenuItem>
+                      ))}
+                    </div>
+                  </div>
+                </DropdownMenuContent>
+              </DropdownMenu>
 
             {/* Transition Type Selector */}
             <DropdownMenu>

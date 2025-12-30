@@ -18,7 +18,7 @@ export default function Resume() {
               vkoval@gmail.com | MA
             </Typography>
             <Button
-              variant="glowSimple"
+              variant="super3d"
               size="sm"
               onClick={() => {
                 const link = document.createElement('a');

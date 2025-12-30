@@ -33,7 +33,7 @@ export default function HurricaneReport() {
 
         <Box className="mt-3 mb-3">
           <Button
-            variant="glowSimple"
+            variant="super3d"
             size="sm"
             onClick={() => setPresentationOpen(true)}
             className="mt-0 mr-2"

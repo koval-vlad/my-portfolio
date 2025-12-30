@@ -35,9 +35,9 @@ export default function ModernHRDashboard() {
           An interactive Tableau dashboard providing comprehensive analytics for human resources management,
           including employee demographics, performance metrics, and organizational insights.
         </Typography>
-        <Box className="mb-2">
+        <Box className="mb-6">
           <Button
-            variant="glow"
+            variant="super3d"
             size="sm"
             onClick={() => setPresentationOpen(true)}
             className="mt-0"

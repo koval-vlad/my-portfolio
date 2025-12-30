@@ -58,6 +58,11 @@
   --will-change: transform, opacity, clip-path;
 }
 
+/* Custom 3D button utilities */
+.perspective-distant {
+  perspective: 1000px;
+}
+
 
 :root.theme-bold-tech {
   --background: oklch(1.0000 0 0);
