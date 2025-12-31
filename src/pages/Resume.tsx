@@ -43,7 +43,7 @@ export default function Resume() {
             <Typography variant="h6" className="font-bold mt-3">TECHNICAL SKILLS</Typography>
             <Box component="ul" sx={{ pl: 3, mt: 1 }}>
               <li><strong>Programming languages:</strong> C#, SQL, PL/SQL, VB.NET, VB6, VB Script, JavaScript, CSS, HTML</li>
-              <li><strong>Technologies:</strong> .NET Core 9, WPF, gRPC, Web API, WinForms, WebForms, WCF/Windows Services, ADO.NET, LINQ, Blazor, ASP.NET Web Services, ASP, IBM and MS MQ, ASP.NET Core, REST API, React, Infragistics Controls, Crystal Reports, SSRS Reports, SOAP, JSON, XML, MSTest, DataDog</li>
+              <li><strong>Technologies:</strong> .NET Core, WPF, gRPC, Web API, WinForms, WebForms, WCF/Windows Services, ADO.NET, LINQ, Blazor, ASP.NET Web Services, ASP, IBM and MS MQ, ASP.NET Core, REST API, React, Infragistics Controls, Crystal Reports, SSRS Reports, SOAP, JSON, XML, MSTest, DataDog</li>
               <li><strong>Databases:</strong> SQL Server, Oracle, Sybase, InterSystems Cache</li>
               <li><strong>Development Tools:</strong> MS Visual Studio, SQL Server Management Studio, Rapid SQL, Toad for Oracle, MS Visio, IIS, SMTP, VS Code</li>
               <li><strong>CI/CD Software:</strong> Azure DevOps, TeamCity, Git, BitBucket, Jira, Confluence, Jenkins, Nexus, UrbanCode Deploy, SonarQube, TFS</li>

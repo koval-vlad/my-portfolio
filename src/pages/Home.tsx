@@ -42,7 +42,7 @@ export default function Home() {
                         Welcome to My Portfolio
                     </Typography>
                     <Typography variant="p" className="mb-4">
-                        This is a professional portfolio application demonstrating full-stack development capabilities.
+                        This is a portfolio of my professional and personal applications demonstrating full-stack development capabilities.
                         Use the navigation menu above to explore different sections of my work.
                     </Typography>
                 </Paper>
