@@ -21,7 +21,7 @@ const DynamicBackground = () => {
     return () => observer.disconnect();
   }, []);
 
-  // Define the base styles for each theme/mode combo
+  // Define the base styles for each theme/mode combo (from https://tailkits.com/components/tailwind-background-snippets/)
   const backgroundMap: Record<Theme, Record<Mode, string>> = {
     'bold-tech': {
       light: "absolute inset-0 -z-10 h-full w-full [background:radial-gradient(125%_125%_at_50%_10%,#fff_40%,#63e_100%)]",
