@@ -24,13 +24,13 @@ export default function MobileEducationSubmenu({ onClose }: MobileEducationSubme
       </Box>
       <button
         onClick={() => handleNavigation('/education/formal-degree')}
-        className="flex items-center w-full py-2 px-6 text-primary text-sm hover:bg-accent"
+        className="flex items-center w-full py-2 px-6 text-foreground text-sm hover:bg-accent hover:text-accent-foreground"
       >
         Formal Degree
       </button>
       <button
         onClick={() => handleNavigation('/education/certificates')}
-        className="flex items-center w-full py-2 px-6 text-primary text-sm hover:bg-accent"
+        className="flex items-center w-full py-2 px-6 text-foreground text-sm hover:bg-accent hover:text-accent-foreground"
       >
         Certificates
       </button>
@@ -43,19 +43,19 @@ export default function MobileEducationSubmenu({ onClose }: MobileEducationSubme
       </Box>
       <button
         onClick={() => handleNavigation('/education/pluralsight')}
-        className="flex items-center w-full py-2 px-6 text-primary text-sm hover:bg-accent"
+        className="flex items-center w-full py-2 px-6 text-foreground text-sm hover:bg-accent hover:text-accent-foreground"
       >
         Pluralsight
       </button>
       <button
         onClick={() => handleNavigation('/education/oracle-university')}
-        className="flex items-center w-full py-2 px-6 text-primary text-sm hover:bg-accent"
+        className="flex items-center w-full py-2 px-6 text-foreground text-sm hover:bg-accent hover:text-accent-foreground"
       >
         Oracle University
       </button>
       <button
         onClick={() => handleNavigation('/education/other')}
-        className="flex items-center w-full py-2 px-6 text-primary text-sm hover:bg-accent"
+        className="flex items-center w-full py-2 px-6 text-foreground text-sm hover:bg-accent hover:text-accent-foreground"
       >
         Other
       </button>

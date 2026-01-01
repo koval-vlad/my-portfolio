@@ -50,7 +50,7 @@ export default function EducationSubmenu({ onClose }: EducationSubmenuProps) {
               <Typography
                 key={item.path}
                 onClick={() => handleNavigation(item.path)}
-                className="text-primary text-sm cursor-pointer py-0.5 hover:bg-accent px-1 rounded"
+                className="text-foreground text-sm cursor-pointer py-0.5 hover:bg-accent hover:text-accent-foreground px-1 rounded"
               >
                 {item.label}
               </Typography>
@@ -69,7 +69,7 @@ export default function EducationSubmenu({ onClose }: EducationSubmenuProps) {
               <Typography
                 key={item.path}
                 onClick={() => handleNavigation(item.path)}
-                className="text-primary text-sm cursor-pointer py-0.5 hover:bg-accent px-1 rounded"
+                className="text-foreground text-sm cursor-pointer py-0.5 hover:bg-accent hover:text-accent-foreground px-1 rounded"
               >
                 {item.label}
               </Typography>

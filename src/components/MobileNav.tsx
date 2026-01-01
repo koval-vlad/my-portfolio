@@ -50,17 +50,17 @@ export default function MobileNav({ currentPath, onClose }: MobileNavProps) {
               <ListItem>
                 {item.expandable ? (
                   <CollapsibleTrigger asChild>
-                    <ListItemButton className={`justify-start ${isActive(item.path) ? 'bg-accent text-accent-foreground font-semibold' : ''}`}>
-                      <ListItemText className="text-left">{item.label}</ListItemText>
-                      {openMenus[item.label] ? <ChevronUp className="h-4 w-4 ml-auto" /> : <ChevronDown className="h-4 w-4 ml-auto" />}
+                    <ListItemButton className={`justify-start text-foreground ${isActive(item.path) ? 'bg-accent text-accent-foreground font-semibold' : ''}`}>
+                      <ListItemText className="text-left text-foreground">{item.label}</ListItemText>
+                      {openMenus[item.label] ? <ChevronUp className="h-4 w-4 ml-auto text-foreground" /> : <ChevronDown className="h-4 w-4 ml-auto text-foreground" />}
                     </ListItemButton>
                   </CollapsibleTrigger>
                 ) : (
                   <ListItemButton
                     onClick={() => handleNavigate(item.path)}
-                    className={`justify-start ${isActive(item.path) ? 'bg-accent text-accent-foreground font-semibold' : ''}`}
+                    className={`justify-start text-foreground ${isActive(item.path) ? 'bg-accent text-accent-foreground font-semibold' : ''}`}
                   >
-                    <ListItemText className="text-left">{item.label}</ListItemText>
+                    <ListItemText className="text-left text-foreground">{item.label}</ListItemText>
                   </ListItemButton>
                 )}
               </ListItem>

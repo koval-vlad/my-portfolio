@@ -32,7 +32,7 @@ export default function SVGSpriteViewerModal({
   const [isPresenting, setIsPresenting] = useState<boolean>(false);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [scale, setScale] = useState<number>(1.5);
-  const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
+  const [isFullscreen, setIsFullscreen] = useState<boolean>(true);
   const [transitionType, setTransitionType] = useState<TransitionType>('random');
   const [slideInterval, setSlideInterval] = useState<number>(10); // Default 10 seconds
 
@@ -101,6 +101,13 @@ export default function SVGSpriteViewerModal({
       setIsPlaying(false);
       setScale(1.0);
       setIsFullscreen(false);
+
+      // Exit fullscreen when modal closes
+      if (document.fullscreenElement) {
+        document.exitFullscreen().catch(error => {
+          console.error('Error exiting fullscreen:', error);
+        });
+      }
     }
   }, [open]);
 
@@ -113,6 +120,21 @@ export default function SVGSpriteViewerModal({
     document.addEventListener('fullscreenchange', handleFullscreenChange);
     return () => document.removeEventListener('fullscreenchange', handleFullscreenChange);
   }, []);
+
+  // Auto-enter fullscreen when modal opens
+  useEffect(() => {
+    if (open && !document.fullscreenElement) {
+      const enterFullscreen = async () => {
+        try {
+          await document.documentElement.requestFullscreen();
+          setIsFullscreen(true);
+        } catch (error) {
+          console.error('Error entering fullscreen:', error);
+        }
+      };
+      enterFullscreen();
+    }
+  }, [open]);
 
   // Auto-advance slides during presentation
   useEffect(() => {
@@ -206,8 +228,10 @@ export default function SVGSpriteViewerModal({
     try {
       if (!document.fullscreenElement) {
         await document.documentElement.requestFullscreen();
+        setIsFullscreen(true);
       } else {
         await document.exitFullscreen();
+        setIsFullscreen(false);
       }
     } catch (error) {
       console.error('Error toggling fullscreen:', error);

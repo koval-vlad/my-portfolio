@@ -19,12 +19,16 @@ import {
 } from '@/components/ui/dropdown-menu';
 import DesktopNav from './DesktopNav';
 import MobileNav from './MobileNav';
+import DynamicBackground from './DynamicBackground';
 import vladImage from '../assets/vlad.svg';
 
 export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isDark, setIsDark] = useState(false);
   const [weather, setWeather] = useState<'sunny' | 'rain' | 'snow'>('sunny'); // Default to sunny
+  const [isHidden, setIsHidden] = useState(false);
+  const [lastScrollY, setLastScrollY] = useState(0);
+  const [scrollDirection, setScrollDirection] = useState<'up' | 'down'>('up');
   const location = useLocation();
   const { theme, setTheme } = useTheme();
 
@@ -48,6 +52,50 @@ export default function Header() {
       setWeather(savedWeather);
     }
   }, []);
+
+  // Handle scroll to hide/show header with improved stability
+  useEffect(() => {
+    let ticking = false;
+    let lastToggleTime = 0;
+    const TOGGLE_COOLDOWN = 300; // Prevent toggling more than once per 300ms
+
+    const handleScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          const currentScrollY = window.scrollY;
+          const now = Date.now();
+
+          // Prevent rapid toggling
+          if (now - lastToggleTime < TOGGLE_COOLDOWN) {
+            ticking = false;
+            return;
+          }
+
+          // Use larger thresholds with more separation
+          const HIDE_THRESHOLD = 150; // Hide when scrolled past 150px
+          const SHOW_THRESHOLD = 50;  // Show when scrolled back to 50px
+
+          // Only hide if scrolling down and past threshold
+          if (!isHidden && currentScrollY > HIDE_THRESHOLD && currentScrollY > lastScrollY + 5) {
+            setIsHidden(true);
+            lastToggleTime = now;
+          }
+          // Only show if scrolling up and above show threshold
+          else if (isHidden && currentScrollY < SHOW_THRESHOLD && currentScrollY < lastScrollY - 5) {
+            setIsHidden(false);
+            lastToggleTime = now;
+          }
+
+          setLastScrollY(currentScrollY);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [lastScrollY, isHidden]);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -102,10 +150,21 @@ export default function Header() {
   return (
     <>
       {/* Header background box */}
-      <Box className="fixed top-0 left-0 right-0 h-16 z-40 bg-card border rounded-xl shadow-sm" />
+      <Box className={`fixed top-0 left-0 right-0 h-16 z-40 bg-card border rounded-xl shadow-sm transition-transform duration-300 ease-in-out ${
+        isHidden ? '-translate-y-full' : 'translate-y-0'
+      }`} />
+
+      {/* Dynamic background patterns for header */}
+      <div className={`fixed top-0 left-0 right-0 h-16 z-30 pointer-events-none overflow-hidden rounded-xl transition-transform duration-300 ease-in-out ${
+        isHidden ? '-translate-y-full' : 'translate-y-0'
+      }`}>
+        <DynamicBackground positioning="absolute" />
+      </div>
 
       {/* Header content */}
-      <Box className="fixed top-0 left-0 right-0 z-50 rounded-t-xl">
+      <Box className={`fixed top-0 left-0 right-0 z-50 rounded-t-xl transition-transform duration-300 ease-in-out ${
+        isHidden ? '-translate-y-full' : 'translate-y-0'
+      }`}>
         <Box className="flex justify-between items-center py-2 px-4 max-w-4xl mx-auto">
           <Box className="w-12" />
 
@@ -228,7 +287,7 @@ export default function Header() {
       </Box>
 
       {/* Spacer for fixed header */}
-      <Box className="h-16" />
+      <Box className={`transition-all duration-300 ease-in-out ${isHidden ? 'h-0' : 'h-16'}`} />
     </>
   );
 }

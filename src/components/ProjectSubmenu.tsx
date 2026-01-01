@@ -106,7 +106,7 @@ export default function ProjectSubmenu({ category, onClose }: ProjectSubmenuProp
               className="w-full h-32 object-contain bg-muted"
             />
             <div className="p-2">
-              <Typography variant="p" className="text-center font-medium text-xs leading-tight">
+              <Typography variant="p" className="text-center font-medium text-xs leading-tight text-foreground">
                 {project.title}
               </Typography>
             </div>

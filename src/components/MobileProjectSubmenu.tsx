@@ -106,7 +106,7 @@ export default function MobileProjectSubmenu({
                 className="w-20 h-16 object-contain bg-muted rounded-md flex-shrink-0"
               />
               <div className="flex-1 text-left flex items-center h-16">
-                <span className="font-medium text-xs leading-tight">
+                <span className="font-medium text-xs leading-tight text-foreground">
                   {project.title}
                 </span>
               </div>
