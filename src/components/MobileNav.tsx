@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { List, ListItem, ListItemButton, ListItemText } from '@/components/ui/list';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { Box } from '@/components/ui/box';
@@ -17,19 +17,44 @@ interface MobileNavProps {
 export default function MobileNav({ currentPath, onClose }: MobileNavProps) {
   const navigate = useNavigate();
   const [openMenus, setOpenMenus] = useState<{ [key: string]: boolean }>({});
+  const [activeMenuItem, setActiveMenuItem] = useState<string | null>(null);
+
+  // Initialize active menu item based on current path
+  useEffect(() => {
+    const currentItem = menuItems.find(item => {
+      if (item.path === '/') return currentPath === '/';
+      return currentPath.startsWith(item.path);
+    });
+    if (currentItem) {
+      setActiveMenuItem(currentItem.label);
+    }
+  }, [currentPath]);
 
   const handleToggle = (menuName: string) => {
     setOpenMenus({ ...openMenus, [menuName]: !openMenus[menuName] });
+    setActiveMenuItem(menuName);
   };
 
   const handleNavigate = (path: string) => {
     navigate(path);
     onClose();
+    // Find the menu item that matches this path and set it as active
+    const menuItem = menuItems.find(item => item.path === path);
+    if (menuItem) {
+      setActiveMenuItem(menuItem.label);
+    }
   };
 
-  const isActive = (path: string) => {
-    if (path === '/') return currentPath === '/';
-    return currentPath.startsWith(path);
+  const isActive = (itemLabel: string) => {
+    // If we have a manually set active item, use that
+    if (activeMenuItem) {
+      return activeMenuItem === itemLabel;
+    }
+    // Otherwise, fall back to path-based logic
+    const item = menuItems.find(menuItem => menuItem.label === itemLabel);
+    if (!item) return false;
+    if (item.path === '/') return currentPath === '/';
+    return currentPath.startsWith(item.path);
   };
 
   const menuItems = [
@@ -50,18 +75,18 @@ export default function MobileNav({ currentPath, onClose }: MobileNavProps) {
               <ListItem>
                 {item.expandable ? (
                   <CollapsibleTrigger asChild>
-                    <ListItemButton className={`justify-start text-foreground ${isActive(item.path) ? 'bg-accent text-accent-foreground font-semibold' : ''}`}>
-                      <ListItemText className="text-left text-foreground">{item.label}</ListItemText>
-                      {openMenus[item.label] ? <ChevronUp className="h-4 w-4 ml-auto text-foreground" /> : <ChevronDown className="h-4 w-4 ml-auto text-foreground" />}
-                    </ListItemButton>
+                    <button className={`flex items-center justify-between w-full py-2 px-4 text-foreground text-sm hover:bg-accent hover:text-accent-foreground cursor-pointer ${isActive(item.label) ? 'bg-accent !text-accent-foreground font-semibold' : ''}`}>
+                      <span className="text-left">{item.label}</span>
+                      {openMenus[item.label] ? <ChevronUp className="h-4 w-4 flex-shrink-0 text-foreground" /> : <ChevronDown className="h-4 w-4 flex-shrink-0 text-foreground" />}
+                    </button>
                   </CollapsibleTrigger>
                 ) : (
-                  <ListItemButton
+                  <button
                     onClick={() => handleNavigate(item.path)}
-                    className={`justify-start text-foreground ${isActive(item.path) ? 'bg-accent text-accent-foreground font-semibold' : ''}`}
+                    className={`flex items-center w-full py-2 px-4 text-foreground text-sm hover:bg-accent hover:text-accent-foreground cursor-pointer ${isActive(item.label) ? 'bg-accent !text-accent-foreground font-semibold' : ''}`}
                   >
-                    <ListItemText className="text-left text-foreground">{item.label}</ListItemText>
-                  </ListItemButton>
+                    {item.label}
+                  </button>
                 )}
               </ListItem>
 

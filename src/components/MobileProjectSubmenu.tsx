@@ -98,7 +98,7 @@ export default function MobileProjectSubmenu({
           <ListItem className="p-0">
             <button
               onClick={() => handleProjectClick(project)}
-              className="flex items-center justify-start gap-3 w-full h-16 px-3 rounded-md hover:bg-accent transition-colors"
+              className="flex items-center justify-start gap-3 w-full h-16 px-3 rounded-md hover:bg-accent transition-colors cursor-pointer"
             >
               <img
                 src={project.image}

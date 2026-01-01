@@ -29,16 +29,16 @@ export default function ResumeSubmenu({ onClose }: ResumeSubmenuProps) {
     <Box className="w-full bg-background">
       <button
         onClick={handleView}
-        className="flex items-center w-full py-2 px-4 text-foreground text-sm hover:bg-accent hover:text-accent-foreground hover:cursor-pointer transition-colors"
+        className="group flex items-center w-full py-2 px-4 text-foreground text-sm hover:bg-accent hover:text-accent-foreground hover:cursor-pointer transition-colors"
       >
-        <Eye className="h-4 w-4 mr-3 text-foreground" />
+        <Eye className="h-4 w-4 mr-3 text-foreground group-hover:text-accent-foreground" />
         View
       </button>
       <button
         onClick={handleDownload}
-        className="flex items-center w-full py-2 px-4 text-foreground text-sm hover:bg-accent hover:text-accent-foreground hover:cursor-pointer transition-colors"
+        className="group flex items-center w-full py-2 px-4 text-foreground text-sm hover:bg-accent hover:text-accent-foreground hover:cursor-pointer transition-colors"
       >
-        <Download className="h-4 w-4 mr-3 text-foreground" />
+        <Download className="h-4 w-4 mr-3 text-foreground group-hover:text-accent-foreground" />
         Download PDF
       </button>
     </Box>
